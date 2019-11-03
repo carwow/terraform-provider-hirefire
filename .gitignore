@@ -1,3 +1,5 @@
 terraform-provider-hirefire
+terraform.tfstate
+terraform.tfstate.*
 .terraform
 main.tf
