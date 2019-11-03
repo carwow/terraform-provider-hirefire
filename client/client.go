@@ -30,7 +30,7 @@ func New(apiKey string) *Client {
 func (c *Client) get(path string, v ...interface{}) (*req.Resp, error) {
 	defaults := []interface{}{
 		req.Header{
-			"Accept":        "application/json",
+			"Accept":        "application/vnd.hirefire.v1+json",
 			"Authorization": "Token " + c.apiKey,
 		},
 	}
