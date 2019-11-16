@@ -7,7 +7,7 @@ import (
 
 type Client struct {
 	req    *req.Req
-	url    string
+	URL    string
 	apiKey string
 
 	Organization *OrganizationResource
@@ -19,7 +19,7 @@ const DefaultURL = "https://api.hirefire.io/"
 func New(apiKey string) *Client {
 	client := &Client{
 		req:    req.New(),
-		url:    DefaultURL,
+		URL:    DefaultURL,
 		apiKey: apiKey,
 	}
 
@@ -36,7 +36,7 @@ func (c *Client) get(path string, v ...interface{}) (*req.Resp, error) {
 			"Authorization": "Token " + c.apiKey,
 		},
 	}
-	return c.req.Get(c.url+path, append(defaults, v...)...)
+	return c.req.Get(c.URL+path, append(defaults, v...)...)
 }
 
 func (c *Client) getResource(path string, id string, wrapped interface{}) error {
