@@ -2,6 +2,8 @@ package client
 
 import (
 	"fmt"
+	"github.com/carwow/terraform-provider-hirefire/client/account"
+	"github.com/carwow/terraform-provider-hirefire/client/organization"
 	"github.com/imroc/req"
 )
 
@@ -10,8 +12,8 @@ type Client struct {
 	url    string
 	apiKey string
 
-	Organization *OrganizationResource
-	Account      *AccountResource
+	Organization *organization.Resource
+	Account      *account.Resource
 }
 
 const DefaultURL = "https://api.hirefire.io/"
@@ -23,8 +25,8 @@ func New(apiKey string) *Client {
 		apiKey: apiKey,
 	}
 
-	client.Organization = &OrganizationResource{client: client}
-	client.Account = &AccountResource{client: client}
+	client.Organization = organization.NewResource(client)
+	client.Account = account.NewResource(client)
 
 	return client
 }
@@ -39,7 +41,7 @@ func (c *Client) get(path string, v ...interface{}) (*req.Resp, error) {
 	return c.req.Get(c.url+path, append(defaults, v...)...)
 }
 
-func (c *Client) getResource(path string, id string, wrapped interface{}) error {
+func (c *Client) GetResource(path string, id string, wrapped interface{}) error {
 	res, err := c.get(path + "/" + id)
 	if err != nil {
 		return err
