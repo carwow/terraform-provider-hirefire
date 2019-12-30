@@ -34,6 +34,14 @@ func create(d *schema.ResourceData, m interface{}) error {
 }
 
 func read(d *schema.ResourceData, m interface{}) error {
+	org, err := config.Client(m).Organization.Get(d.Id())
+	if err != nil {
+		return err
+	}
+
+	d.Set("name", org.Name)
+	d.Set("time_zone", org.TimeZone)
+
 	return nil
 }
 
@@ -45,15 +53,11 @@ func delete(d *schema.ResourceData, m interface{}) error {
 	return nil
 }
 
-func importer(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	org, err := config.Client(meta).Organization.Get(d.Id())
+func importer(d *schema.ResourceData, m interface{}) ([]*schema.ResourceData, error) {
+	err := read(d, m)
 	if err != nil {
 		return nil, err
 	}
-
-	d.SetId(org.Id)
-	d.Set("name", org.Name)
-	d.Set("time_zone", org.TimeZone)
 
 	return []*schema.ResourceData{d}, nil
 }
