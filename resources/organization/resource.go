@@ -1,6 +1,7 @@
 package organization
 
 import (
+	"github.com/carwow/terraform-provider-hirefire/client"
 	"github.com/carwow/terraform-provider-hirefire/config"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 )
@@ -29,8 +30,25 @@ func Resource() *schema.Resource {
 	}
 }
 
+func setAttributes(d *schema.ResourceData, org *client.Organization) error {
+	d.Set("name", org.Name)
+	d.Set("time_zone", org.TimeZone)
+	return nil
+}
+
 func create(d *schema.ResourceData, m interface{}) error {
-	return read(d, m)
+	input := client.Organization{
+		Name:     d.Get("name").(string),
+		TimeZone: d.Get("time_zone").(string),
+	}
+	org, err := config.Client(m).Organization.Create(input)
+	if err != nil {
+		return err
+	}
+
+	d.SetId(org.Id)
+	setAttributes(d, org)
+	return nil
 }
 
 func read(d *schema.ResourceData, m interface{}) error {
@@ -39,9 +57,7 @@ func read(d *schema.ResourceData, m interface{}) error {
 		return err
 	}
 
-	d.Set("name", org.Name)
-	d.Set("time_zone", org.TimeZone)
-
+	setAttributes(d, org)
 	return nil
 }
 
@@ -50,7 +66,8 @@ func update(d *schema.ResourceData, m interface{}) error {
 }
 
 func delete(d *schema.ResourceData, m interface{}) error {
-	return nil
+	err := config.Client(m).Organization.Delete(d.Id())
+	return err
 }
 
 func importer(d *schema.ResourceData, m interface{}) ([]*schema.ResourceData, error) {

@@ -6,9 +6,9 @@ import (
 )
 
 type Client struct {
-	req    *req.Req
-	URL    string
-	apiKey string
+	req     *req.Req
+	URL     string
+	headers []interface{}
 
 	Organization *OrganizationResource
 	Account      *AccountResource
@@ -18,9 +18,14 @@ const DefaultURL = "https://api.hirefire.io/"
 
 func New(apiKey string) *Client {
 	client := &Client{
-		req:    req.New(),
-		URL:    DefaultURL,
-		apiKey: apiKey,
+		req: req.New(),
+		URL: DefaultURL,
+		headers: []interface{}{
+			req.Header{
+				"Accept":        "application/vnd.hirefire.v1+json",
+				"Authorization": "Token " + apiKey,
+			},
+		},
 	}
 
 	client.Organization = &OrganizationResource{client: client}
@@ -30,13 +35,15 @@ func New(apiKey string) *Client {
 }
 
 func (c *Client) get(path string, v ...interface{}) (*req.Resp, error) {
-	defaults := []interface{}{
-		req.Header{
-			"Accept":        "application/vnd.hirefire.v1+json",
-			"Authorization": "Token " + c.apiKey,
-		},
-	}
-	return c.req.Get(c.URL+path, append(defaults, v...)...)
+	return c.req.Get(c.URL+path, append(c.headers, v...)...)
+}
+
+func (c *Client) create(path string, v ...interface{}) (*req.Resp, error) {
+	return c.req.Post(c.URL+path, append(c.headers, v...)...)
+}
+
+func (c *Client) delete(path string, v ...interface{}) (*req.Resp, error) {
+	return c.req.Delete(c.URL+path, append(c.headers, v...)...)
 }
 
 func (c *Client) getResource(path string, id string, wrapped interface{}) error {
@@ -51,6 +58,35 @@ func (c *Client) getResource(path string, id string, wrapped interface{}) error 
 	err = res.ToJSON(&wrapped)
 	if err != nil {
 		return fmt.Errorf("%s: %s", err, res.String())
+	}
+
+	return nil
+}
+
+func (c *Client) createResource(path string, wrapped interface{}) error {
+	res, err := c.create(path, req.BodyJSON(&wrapped))
+	if err != nil {
+		return err
+	}
+	if res.Response().StatusCode != 201 {
+		return fmt.Errorf("%s", res.String())
+	}
+
+	err = res.ToJSON(&wrapped)
+	if err != nil {
+		return fmt.Errorf("%s: %s", err, res.String())
+	}
+
+	return nil
+}
+
+func (c *Client) deleteResource(path string, id string) error {
+	res, err := c.delete(path + "/" + id)
+	if err != nil {
+		return err
+	}
+	if res.Response().StatusCode != 200 {
+		return fmt.Errorf("%s", res.String())
 	}
 
 	return nil
