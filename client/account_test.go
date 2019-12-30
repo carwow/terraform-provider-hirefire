@@ -7,14 +7,13 @@ import (
 	"testing"
 )
 
-func TestGetOrganization(t *testing.T) {
+func TestGetAccount(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		assert.Equals(t, req.URL.String(), "/organizations/ID-123")
+		assert.Equals(t, req.URL.String(), "/accounts/ID-123")
 		rw.Write([]byte(`{
-			"organization": {
+			"account": {
 				"id": "ID-123",
-				"name": "carwow",
-				"time_zone": "Europe/London"
+				"organization_id": "ID-999"
 			}
 		}`))
 	}))
@@ -23,14 +22,13 @@ func TestGetOrganization(t *testing.T) {
 	client := New("secret")
 	client.URL = server.URL + "/"
 
-	organization, err := client.Organization.Get("ID-123")
+	account, err := client.Account.Get("ID-123")
 	assert.Ok(t, err)
 
-	expected := &Organization{
-		Id:       "ID-123",
-		Name:     "carwow",
-		TimeZone: "Europe/London",
+	expected := &Account{
+		Id:             "ID-123",
+		OrganizationId: "ID-999",
 	}
-	assert.Equals(t, expected, organization)
+	assert.Equals(t, expected, account)
 
 }
