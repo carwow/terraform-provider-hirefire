@@ -42,6 +42,10 @@ func (c *Client) create(path string, v ...interface{}) (*req.Resp, error) {
 	return c.req.Post(c.URL+path, append(c.headers, v...)...)
 }
 
+func (c *Client) update(path string, v ...interface{}) (*req.Resp, error) {
+	return c.req.Patch(c.URL+path, append(c.headers, v...)...)
+}
+
 func (c *Client) delete(path string, v ...interface{}) (*req.Resp, error) {
 	return c.req.Delete(c.URL+path, append(c.headers, v...)...)
 }
@@ -69,6 +73,23 @@ func (c *Client) createResource(path string, wrapped interface{}) error {
 		return err
 	}
 	if res.Response().StatusCode != 201 {
+		return fmt.Errorf("%s", res.String())
+	}
+
+	err = res.ToJSON(&wrapped)
+	if err != nil {
+		return fmt.Errorf("%s: %s", err, res.String())
+	}
+
+	return nil
+}
+
+func (c *Client) updateResource(path string, id string, wrapped interface{}) error {
+	res, err := c.update(path+"/"+id, req.BodyJSON(&wrapped))
+	if err != nil {
+		return err
+	}
+	if res.Response().StatusCode != 200 {
 		return fmt.Errorf("%s", res.String())
 	}
 

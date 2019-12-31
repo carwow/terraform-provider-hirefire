@@ -62,7 +62,20 @@ func read(d *schema.ResourceData, m interface{}) error {
 }
 
 func update(d *schema.ResourceData, m interface{}) error {
-	return read(d, m)
+	d.Partial(true)
+
+	input := client.Organization{
+		Id:       d.Id(),
+		Name:     d.Get("name").(string),
+		TimeZone: d.Get("time_zone").(string),
+	}
+	_, err := config.Client(m).Organization.Update(input)
+	if err != nil {
+		return err
+	}
+
+	d.Partial(false)
+	return nil
 }
 
 func delete(d *schema.ResourceData, m interface{}) error {

@@ -20,9 +20,15 @@ func (r *OrganizationResource) Get(id string) (*Organization, error) {
 	return &wrapped.Organization, err
 }
 
-func (r *OrganizationResource) Create(input Organization) (*Organization, error) {
-	wrapped := &wrappedOrganization{Organization: input}
+func (r *OrganizationResource) Create(create Organization) (*Organization, error) {
+	wrapped := &wrappedOrganization{Organization: create}
 	err := r.client.createResource("organizations", wrapped)
+	return &wrapped.Organization, err
+}
+
+func (r *OrganizationResource) Update(update Organization) (*Organization, error) {
+	wrapped := &wrappedOrganization{Organization: update}
+	err := r.client.updateResource("organizations", update.Id, wrapped)
 	return &wrapped.Organization, err
 }
 
