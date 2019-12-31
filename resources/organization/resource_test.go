@@ -4,14 +4,17 @@ import (
 	"fmt"
 	"testing"
 
+	"github.com/carwow/terraform-provider-hirefire/client"
 	"github.com/carwow/terraform-provider-hirefire/testing/helper"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/terraform"
 )
 
-func TestAccImportBasic(t *testing.T) {
-	name := fmt.Sprintf("test-%s", acctest.RandString(10))
+const resourceName = "hirefire_organization.foobar"
+
+func TestAccBasic(t *testing.T) {
+	org := client.Organization{}
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:     helper.PreCheck(t),
@@ -19,11 +22,23 @@ func TestAccImportBasic(t *testing.T) {
 		CheckDestroy: checkDestroy,
 		Steps: []resource.TestStep{
 			{
-				Config: config(name, "UTC"),
-				Check:  resource.ComposeTestCheckFunc(),
+				Config: func(org *client.Organization) string {
+					org.Name = fmt.Sprintf("test-%s", acctest.RandString(10))
+					org.TimeZone = "London"
+					return config(org)
+				}(&org),
+				Check: checkAttributes(t, org),
 			},
 			{
-				ResourceName:      "hirefire_organization.foobar",
+				Config: func(org *client.Organization) string {
+					org.Name = fmt.Sprintf("test-%s", acctest.RandString(10))
+					org.TimeZone = "Lisbon"
+					return config(org)
+				}(&org),
+				Check: checkAttributes(t, org),
+			},
+			{
+				ResourceName:      resourceName,
 				ImportState:       true,
 				ImportStateVerify: true,
 			},
@@ -31,28 +46,46 @@ func TestAccImportBasic(t *testing.T) {
 	})
 }
 
-func config(name, timeZone string) string {
+func config(org *client.Organization) string {
 	return fmt.Sprintf(`
 resource "hirefire_organization" "foobar" {
     name = "%s"
     time_zone = "%s"
-}`, name, timeZone)
+}`, org.Name, org.TimeZone)
 }
 
-func checkDestroy(s *terraform.State) error {
-	client := helper.Client()
+func checkAttributes(t *testing.T, org client.Organization) resource.TestCheckFunc {
+	return resource.ComposeAggregateTestCheckFunc(
+		helper.CheckResourceAttributes(resourceName, map[string]string{
+			"name":      org.Name,
+			"time_zone": org.TimeZone,
+		}),
+		func(state *terraform.State) error {
+			id, err := helper.GetResourceID(state, resourceName)
+			if err != nil {
+				return err
+			}
 
-	for _, rs := range s.RootModule().Resources {
-		if rs.Type != "hirefire_organization" {
-			continue
-		}
+			actualOrg, err := helper.Client().Organization.Get(id)
+			if err != nil {
+				return err
+			}
 
-		_, err := client.Organization.Get(rs.Primary.ID)
+			org.Id = actualOrg.Id
+			return helper.Equals(org, *actualOrg)
+		},
+	)
+}
 
-		if err == nil {
-			return fmt.Errorf("Still exists")
-		}
+func checkDestroy(state *terraform.State) error {
+	id, err := helper.GetResourceID(state, resourceName)
+	if err != nil {
+		return err
 	}
 
+	_, err = helper.Client().Organization.Get(id)
+	if err == nil {
+		return fmt.Errorf("Not destroyed: %s", resourceName)
+	}
 	return nil
 }
