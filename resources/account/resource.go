@@ -1,6 +1,7 @@
 package account
 
 import (
+	"github.com/carwow/terraform-provider-hirefire/client"
 	"github.com/carwow/terraform-provider-hirefire/config"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 )
@@ -25,26 +26,61 @@ func Resource() *schema.Resource {
 	}
 }
 
+func setAttributes(d *schema.ResourceData, acc *client.Account) error {
+	d.Set("organization_id", acc.OrganizationId)
+	return nil
+}
+
 func create(d *schema.ResourceData, m interface{}) error {
-	return read(d, m)
+	input := client.Account{
+		OrganizationId: d.Get("organization_id").(string),
+	}
+	acc, err := config.Client(m).Account.Create(input)
+	if err != nil {
+		return err
+	}
+
+	d.SetId(acc.Id)
+	setAttributes(d, acc)
+	return nil
 }
 
 func read(d *schema.ResourceData, m interface{}) error {
+	acc, err := config.Client(m).Account.Get(d.Id())
+	if err != nil {
+		return err
+	}
+
+	setAttributes(d, acc)
+	return nil
+}
+
+func update(d *schema.ResourceData, m interface{}) error {
+	d.Partial(true)
+
+	input := client.Account{
+		Id:             d.Id(),
+		OrganizationId: d.Get("organization_id").(string),
+	}
+	_, err := config.Client(m).Account.Update(input)
+	if err != nil {
+		return err
+	}
+
+	d.Partial(false)
 	return nil
 }
 
 func delete(d *schema.ResourceData, m interface{}) error {
-	return nil
+	err := config.Client(m).Account.Delete(d.Id())
+	return err
 }
 
-func importer(d *schema.ResourceData, meta interface{}) ([]*schema.ResourceData, error) {
-	account, err := config.Client(meta).Account.Get(d.Id())
+func importer(d *schema.ResourceData, m interface{}) ([]*schema.ResourceData, error) {
+	err := read(d, m)
 	if err != nil {
 		return nil, err
 	}
-
-	d.SetId(account.Id)
-	d.Set("organization_id", account.OrganizationId)
 
 	return []*schema.ResourceData{d}, nil
 }

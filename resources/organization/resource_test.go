@@ -27,7 +27,7 @@ func TestAccBasic(t *testing.T) {
 					org.TimeZone = "London"
 					return config(org)
 				}(&org),
-				Check: checkAttributes(t, org),
+				Check: checkAttributes(org),
 			},
 			{
 				Config: func(org *client.Organization) string {
@@ -35,7 +35,7 @@ func TestAccBasic(t *testing.T) {
 					org.TimeZone = "Lisbon"
 					return config(org)
 				}(&org),
-				Check: checkAttributes(t, org),
+				Check: checkAttributes(org),
 			},
 			{
 				ResourceName:      resourceName,
@@ -54,7 +54,7 @@ resource "hirefire_organization" "foobar" {
 }`, org.Name, org.TimeZone)
 }
 
-func checkAttributes(t *testing.T, org client.Organization) resource.TestCheckFunc {
+func checkAttributes(org client.Organization) resource.TestCheckFunc {
 	return resource.ComposeAggregateTestCheckFunc(
 		helper.CheckResourceAttributes(resourceName, map[string]string{
 			"name":      org.Name,
