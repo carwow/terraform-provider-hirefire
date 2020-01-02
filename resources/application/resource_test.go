@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/carwow/terraform-provider-hirefire/client"
+	"github.com/carwow/terraform-provider-hirefire/ptr"
 	"github.com/carwow/terraform-provider-hirefire/testing/helper"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
@@ -59,10 +60,8 @@ func TestAccApplicationEverything(t *testing.T) {
 			{
 				Config: func(orgName string, app *client.Application) string {
 					app.Name = fmt.Sprintf("test-%s", acctest.RandString(10))
-					value := fmt.Sprintf("test-%s", acctest.RandString(10))
-					app.CustomDomain = &value
-					value = fmt.Sprintf("test-%s", acctest.RandString(10))
-					app.LogplexDrainToken = &value
+					app.CustomDomain = ptr.String(fmt.Sprintf("test-%s", acctest.RandString(10)))
+					app.LogplexDrainToken = ptr.String(fmt.Sprintf("test-%s", acctest.RandString(10)))
 					app.Ssl = randBool()
 					app.RestartCrashedDynos = randBool()
 					app.NewIssueNotifications = randBool()
@@ -74,10 +73,8 @@ func TestAccApplicationEverything(t *testing.T) {
 			{
 				Config: func(orgName string, app *client.Application) string {
 					app.Name = fmt.Sprintf("test-%s", acctest.RandString(10))
-					value := fmt.Sprintf("test-%s", acctest.RandString(10))
-					app.CustomDomain = &value
-					value = fmt.Sprintf("test-%s", acctest.RandString(10))
-					app.LogplexDrainToken = &value
+					app.CustomDomain = ptr.String(fmt.Sprintf("test-%s", acctest.RandString(10)))
+					app.LogplexDrainToken = ptr.String(fmt.Sprintf("test-%s", acctest.RandString(10)))
 					app.Ssl = randBool()
 					app.RestartCrashedDynos = randBool()
 					app.NewIssueNotifications = randBool()
@@ -150,20 +147,13 @@ func checks(app client.Application) resource.TestCheckFunc {
 func checkAttributes(app client.Application) resource.TestCheckFunc {
 	return helper.CheckResourceAttributes(resourceName, map[string]string{
 		"name":                         app.Name,
-		"custom_domain":                stringOrEmpty(app.CustomDomain),
-		"logplex_drain_token":          stringOrEmpty(app.LogplexDrainToken),
+		"custom_domain":                helper.StringOrEmpty(app.CustomDomain),
+		"logplex_drain_token":          helper.StringOrEmpty(app.LogplexDrainToken),
 		"ssl":                          strconv.FormatBool(app.Ssl),
 		"restart_crashed_dynos":        strconv.FormatBool(app.RestartCrashedDynos),
 		"new_issue_notifications":      strconv.FormatBool(app.NewIssueNotifications),
 		"resolved_issue_notifications": strconv.FormatBool(app.ResolvedIssueNotifications),
 	})
-}
-
-func stringOrEmpty(str *string) string {
-	if str == nil {
-		return ""
-	}
-	return *str
 }
 
 func checkExists(app client.Application) resource.TestCheckFunc {

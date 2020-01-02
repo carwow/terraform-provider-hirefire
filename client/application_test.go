@@ -1,6 +1,7 @@
 package client
 
 import (
+	"github.com/carwow/terraform-provider-hirefire/ptr"
 	"github.com/carwow/terraform-provider-hirefire/testing/assert"
 	"net/http"
 	"net/http/httptest"
@@ -66,14 +67,12 @@ func TestGetApplicationEverything(t *testing.T) {
 	application, err := client.Application.Get("ID-123")
 	assert.Ok(t, err)
 
-	customDomain := "custom-domain"
-	drainToken := "drain-token"
 	expected := &Application{
 		Id:                         "ID-123",
 		AccountId:                  "ID-999",
 		Name:                       "app-name",
-		CustomDomain:               &customDomain,
-		LogplexDrainToken:          &drainToken,
+		CustomDomain:               ptr.String("custom-domain"),
+		LogplexDrainToken:          ptr.String("drain-token"),
 		Ssl:                        true,
 		RestartCrashedDynos:        true,
 		NewIssueNotifications:      true,

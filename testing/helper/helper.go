@@ -55,3 +55,10 @@ func Equals(exp, act interface{}) error {
 	}
 	return nil
 }
+
+func StringOrEmpty(str *string) string {
+	if str == nil {
+		return ""
+	}
+	return *str
+}
