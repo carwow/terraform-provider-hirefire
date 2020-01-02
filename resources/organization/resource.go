@@ -30,18 +30,21 @@ func Resource() *schema.Resource {
 	}
 }
 
-func setAttributes(d *schema.ResourceData, org *client.Organization) error {
+func setAttributes(d *schema.ResourceData, org *client.Organization) {
 	d.Set("name", org.Name)
 	d.Set("time_zone", org.TimeZone)
-	return nil
 }
 
-func create(d *schema.ResourceData, m interface{}) error {
-	input := client.Organization{
+func getAttributes(d *schema.ResourceData) client.Organization {
+	return client.Organization{
+		Id:       d.Id(),
 		Name:     d.Get("name").(string),
 		TimeZone: d.Get("time_zone").(string),
 	}
-	org, err := config.Client(m).Organization.Create(input)
+}
+
+func create(d *schema.ResourceData, m interface{}) error {
+	org, err := config.Client(m).Organization.Create(getAttributes(d))
 	if err != nil {
 		return err
 	}
@@ -64,12 +67,7 @@ func read(d *schema.ResourceData, m interface{}) error {
 func update(d *schema.ResourceData, m interface{}) error {
 	d.Partial(true)
 
-	input := client.Organization{
-		Id:       d.Id(),
-		Name:     d.Get("name").(string),
-		TimeZone: d.Get("time_zone").(string),
-	}
-	_, err := config.Client(m).Organization.Update(input)
+	_, err := config.Client(m).Organization.Update(getAttributes(d))
 	if err != nil {
 		return err
 	}

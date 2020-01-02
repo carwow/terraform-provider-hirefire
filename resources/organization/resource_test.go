@@ -13,7 +13,7 @@ import (
 
 const resourceName = "hirefire_organization.foobar"
 
-func TestAccBasic(t *testing.T) {
+func TestAccOrganization(t *testing.T) {
 	org := client.Organization{}
 
 	resource.Test(t, resource.TestCase{
@@ -27,7 +27,7 @@ func TestAccBasic(t *testing.T) {
 					org.TimeZone = "London"
 					return config(org)
 				}(&org),
-				Check: checkAttributes(org),
+				Check: checks(org),
 			},
 			{
 				Config: func(org *client.Organization) string {
@@ -35,7 +35,7 @@ func TestAccBasic(t *testing.T) {
 					org.TimeZone = "Lisbon"
 					return config(org)
 				}(&org),
-				Check: checkAttributes(org),
+				Check: checks(org),
 			},
 			{
 				ResourceName:      resourceName,
@@ -49,32 +49,40 @@ func TestAccBasic(t *testing.T) {
 func config(org *client.Organization) string {
 	return fmt.Sprintf(`
 resource "hirefire_organization" "foobar" {
-    name = "%s"
-    time_zone = "%s"
+	name = "%s"
+	time_zone = "%s"
 }`, org.Name, org.TimeZone)
 }
 
-func checkAttributes(org client.Organization) resource.TestCheckFunc {
+func checks(org client.Organization) resource.TestCheckFunc {
 	return resource.ComposeAggregateTestCheckFunc(
-		helper.CheckResourceAttributes(resourceName, map[string]string{
-			"name":      org.Name,
-			"time_zone": org.TimeZone,
-		}),
-		func(state *terraform.State) error {
-			id, err := helper.GetResourceID(state, resourceName)
-			if err != nil {
-				return err
-			}
-
-			actualOrg, err := helper.Client().Organization.Get(id)
-			if err != nil {
-				return err
-			}
-
-			org.Id = actualOrg.Id
-			return helper.Equals(org, *actualOrg)
-		},
+		checkAttributes(org),
+		checkExists(org),
 	)
+}
+
+func checkAttributes(org client.Organization) resource.TestCheckFunc {
+	return helper.CheckResourceAttributes(resourceName, map[string]string{
+		"name":      org.Name,
+		"time_zone": org.TimeZone,
+	})
+}
+
+func checkExists(org client.Organization) resource.TestCheckFunc {
+	return func(state *terraform.State) error {
+		id, err := helper.GetResourceID(state, resourceName)
+		if err != nil {
+			return err
+		}
+
+		actualOrg, err := helper.Client().Organization.Get(id)
+		if err != nil {
+			return err
+		}
+
+		org.Id = actualOrg.Id
+		return helper.Equals(org, *actualOrg)
+	}
 }
 
 func checkDestroy(state *terraform.State) error {

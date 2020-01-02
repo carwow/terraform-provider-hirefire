@@ -12,7 +12,7 @@ import (
 
 const resourceName = "hirefire_account.foobar"
 
-func TestAccBasic(t *testing.T) {
+func TestAccAccount(t *testing.T) {
 	orgName := fmt.Sprintf("test-%s", acctest.RandString(10))
 
 	resource.Test(t, resource.TestCase{
@@ -22,7 +22,7 @@ func TestAccBasic(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: config(orgName),
-				Check:  exists,
+				Check:  checkExists,
 			},
 			{
 				ResourceName:      resourceName,
@@ -36,8 +36,8 @@ func TestAccBasic(t *testing.T) {
 func config(orgName string) string {
 	return fmt.Sprintf(`
 resource "hirefire_organization" "foobar" {
-    name = "%s"
-    time_zone = "UTC"
+	name = "%s"
+	time_zone = "UTC"
 }
 
 resource "hirefire_account" "foobar" {
@@ -45,7 +45,7 @@ resource "hirefire_account" "foobar" {
 }`, orgName)
 }
 
-func exists(state *terraform.State) error {
+func checkExists(state *terraform.State) error {
 	id, err := helper.GetResourceID(state, resourceName)
 	if err != nil {
 		return err

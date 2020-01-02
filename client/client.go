@@ -12,6 +12,7 @@ type Client struct {
 
 	Organization *OrganizationResource
 	Account      *AccountResource
+	Application  *ApplicationResource
 }
 
 const DefaultURL = "https://api.hirefire.io/"
@@ -30,6 +31,7 @@ func New(apiKey string) *Client {
 
 	client.Organization = &OrganizationResource{client: client}
 	client.Account = &AccountResource{client: client}
+	client.Application = &ApplicationResource{client: client}
 
 	return client
 }

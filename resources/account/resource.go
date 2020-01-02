@@ -26,16 +26,18 @@ func Resource() *schema.Resource {
 	}
 }
 
-func setAttributes(d *schema.ResourceData, acc *client.Account) error {
+func setAttributes(d *schema.ResourceData, acc *client.Account) {
 	d.Set("organization_id", acc.OrganizationId)
-	return nil
+}
+
+func getAttributes(d *schema.ResourceData) client.Account {
+	return client.Account{
+		OrganizationId: d.Get("organization_id").(string),
+	}
 }
 
 func create(d *schema.ResourceData, m interface{}) error {
-	input := client.Account{
-		OrganizationId: d.Get("organization_id").(string),
-	}
-	acc, err := config.Client(m).Account.Create(input)
+	acc, err := config.Client(m).Account.Create(getAttributes(d))
 	if err != nil {
 		return err
 	}
@@ -58,11 +60,7 @@ func read(d *schema.ResourceData, m interface{}) error {
 func update(d *schema.ResourceData, m interface{}) error {
 	d.Partial(true)
 
-	input := client.Account{
-		Id:             d.Id(),
-		OrganizationId: d.Get("organization_id").(string),
-	}
-	_, err := config.Client(m).Account.Update(input)
+	_, err := config.Client(m).Account.Update(getAttributes(d))
 	if err != nil {
 		return err
 	}
