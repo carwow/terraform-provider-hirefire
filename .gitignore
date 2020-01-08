@@ -3,3 +3,4 @@ terraform.tfstate
 terraform.tfstate.*
 .terraform
 main.tf
+.env
