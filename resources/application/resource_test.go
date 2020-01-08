@@ -2,14 +2,12 @@ package application_test
 
 import (
 	"fmt"
-	"math/rand"
 	"strconv"
 	"testing"
 
 	"github.com/carwow/terraform-provider-hirefire/client"
 	"github.com/carwow/terraform-provider-hirefire/ptr"
 	"github.com/carwow/terraform-provider-hirefire/testing/helper"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/terraform"
 )
@@ -17,8 +15,8 @@ import (
 const resourceName = "hirefire_application.foobar"
 
 func TestAccApplication(t *testing.T) {
-	orgName := fmt.Sprintf("test-%s", acctest.RandString(10))
-	app := client.Application{}
+	orgName := fmt.Sprintf("test-%s", helper.RandString(10))
+	app := &client.Application{}
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:     helper.PreCheck(t),
@@ -27,17 +25,21 @@ func TestAccApplication(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: func(orgName string, app *client.Application) string {
-					app.Name = fmt.Sprintf("test-%s", acctest.RandString(10))
+					*app = client.Application{
+						Name: fmt.Sprintf("test-%s", helper.RandString(10)),
+					}
 					return config(orgName, app)
-				}(orgName, &app),
-				Check: checks(app),
+				}(orgName, app),
+				Check: checks(*app),
 			},
 			{
 				Config: func(orgName string, app *client.Application) string {
-					app.Name = fmt.Sprintf("test-%s", acctest.RandString(10))
+					*app = client.Application{
+						Name: fmt.Sprintf("test-%s", helper.RandString(10)),
+					}
 					return config(orgName, app)
-				}(orgName, &app),
-				Check: checks(app),
+				}(orgName, app),
+				Check: checks(*app),
 			},
 			{
 				ResourceName:      resourceName,
@@ -49,8 +51,8 @@ func TestAccApplication(t *testing.T) {
 }
 
 func TestAccApplicationEverything(t *testing.T) {
-	orgName := fmt.Sprintf("test-%s", acctest.RandString(10))
-	app := client.Application{}
+	orgName := fmt.Sprintf("test-%s", helper.RandString(10))
+	app := &client.Application{}
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:     helper.PreCheck(t),
@@ -59,29 +61,33 @@ func TestAccApplicationEverything(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: func(orgName string, app *client.Application) string {
-					app.Name = fmt.Sprintf("test-%s", acctest.RandString(10))
-					app.CustomDomain = ptr.String(fmt.Sprintf("test-%s", acctest.RandString(10)))
-					app.LogplexDrainToken = ptr.String(fmt.Sprintf("test-%s", acctest.RandString(10)))
-					app.Ssl = randBool()
-					app.RestartCrashedDynos = randBool()
-					app.NewIssueNotifications = randBool()
-					app.ResolvedIssueNotifications = randBool()
+					*app = client.Application{
+						Name:                       fmt.Sprintf("test-%s", helper.RandString(10)),
+						CustomDomain:               ptr.String(fmt.Sprintf("test-%s", helper.RandString(10))),
+						LogplexDrainToken:          ptr.String(fmt.Sprintf("test-%s", helper.RandString(10))),
+						Ssl:                        helper.RandBool(),
+						RestartCrashedDynos:        helper.RandBool(),
+						NewIssueNotifications:      helper.RandBool(),
+						ResolvedIssueNotifications: helper.RandBool(),
+					}
 					return configEverything(orgName, app)
-				}(orgName, &app),
-				Check: checks(app),
+				}(orgName, app),
+				Check: checks(*app),
 			},
 			{
 				Config: func(orgName string, app *client.Application) string {
-					app.Name = fmt.Sprintf("test-%s", acctest.RandString(10))
-					app.CustomDomain = ptr.String(fmt.Sprintf("test-%s", acctest.RandString(10)))
-					app.LogplexDrainToken = ptr.String(fmt.Sprintf("test-%s", acctest.RandString(10)))
-					app.Ssl = randBool()
-					app.RestartCrashedDynos = randBool()
-					app.NewIssueNotifications = randBool()
-					app.ResolvedIssueNotifications = randBool()
+					*app = client.Application{
+						Name:                       fmt.Sprintf("test-%s", helper.RandString(10)),
+						CustomDomain:               ptr.String(fmt.Sprintf("test-%s", helper.RandString(10))),
+						LogplexDrainToken:          ptr.String(fmt.Sprintf("test-%s", helper.RandString(10))),
+						Ssl:                        helper.RandBool(),
+						RestartCrashedDynos:        helper.RandBool(),
+						NewIssueNotifications:      helper.RandBool(),
+						ResolvedIssueNotifications: helper.RandBool(),
+					}
 					return configEverything(orgName, app)
-				}(orgName, &app),
-				Check: checks(app),
+				}(orgName, app),
+				Check: checks(*app),
 			},
 			{
 				ResourceName:      resourceName,
@@ -92,25 +98,21 @@ func TestAccApplicationEverything(t *testing.T) {
 	})
 }
 
-func randBool() bool {
-	return rand.Intn(2) == 0
-}
-
 func configBase(orgName, appAttributes string) string {
 	return fmt.Sprintf(`
-resource "hirefire_organization" "foobar" {
-	name = "%s"
-	time_zone = "UTC"
-}
+		resource "hirefire_organization" "foobar" {
+			name = "%s"
+			time_zone = "UTC"
+		}
 
-resource "hirefire_account" "foobar" {
-	organization_id = hirefire_organization.foobar.id
-}
+		resource "hirefire_account" "foobar" {
+			organization_id = hirefire_organization.foobar.id
+		}
 
-resource "hirefire_application" "foobar" {
-	account_id = hirefire_account.foobar.id
-	%s
-}`, orgName, appAttributes)
+		resource "hirefire_application" "foobar" {
+			account_id = hirefire_account.foobar.id
+			%s
+		}`, orgName, appAttributes)
 }
 
 func config(orgName string, app *client.Application) string {
@@ -119,14 +121,14 @@ func config(orgName string, app *client.Application) string {
 
 func configEverything(orgName string, app *client.Application) string {
 	return configBase(orgName, fmt.Sprintf(`
-	name = "%s"
-	custom_domain = "%s"
-	logplex_drain_token = "%s"
-	ssl = %t
-	restart_crashed_dynos = %t
-	new_issue_notifications = %t
-	resolved_issue_notifications = %t
-`,
+		name = "%s"
+		custom_domain = "%s"
+		logplex_drain_token = "%s"
+		ssl = %t
+		restart_crashed_dynos = %t
+		new_issue_notifications = %t
+		resolved_issue_notifications = %t
+		`,
 		app.Name,
 		*app.CustomDomain,
 		*app.LogplexDrainToken,

@@ -13,9 +13,9 @@ func TestGetApplication(t *testing.T) {
 		assert.Equals(t, req.URL.String(), "/applications/ID-123")
 		rw.Write([]byte(`{
 			"application": {
-				"id": "ID-123",
+				"id":         "ID-123",
 				"account_id": "ID-999",
-				"name": "app-name"
+				"name":       "app-name"
 			}
 		}`))
 	}))
@@ -47,14 +47,14 @@ func TestGetApplicationEverything(t *testing.T) {
 		assert.Equals(t, req.URL.String(), "/applications/ID-123")
 		rw.Write([]byte(`{
 			"application": {
-				"id": "ID-123",
-				"account_id": "ID-999",
-				"name": "app-name",
-				"custom_domain": "custom-domain",
-				"logplex_drain_token": "drain-token",
-				"ssl": true,
-				"restart_crashed_dynos": true,
-				"new_issue_notifications": true,
+				"id":                           "ID-123",
+				"account_id":                   "ID-999",
+				"name":                         "app-name",
+				"custom_domain":                "custom-domain",
+				"logplex_drain_token":          "drain-token",
+				"ssl":                          true,
+				"restart_crashed_dynos":        true,
+				"new_issue_notifications":      true,
 				"resolved_issue_notifications": true
 			}
 		}`))

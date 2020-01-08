@@ -6,7 +6,6 @@ import (
 
 	"github.com/carwow/terraform-provider-hirefire/client"
 	"github.com/carwow/terraform-provider-hirefire/testing/helper"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/terraform"
 )
@@ -14,7 +13,7 @@ import (
 const resourceName = "hirefire_organization.foobar"
 
 func TestAccOrganization(t *testing.T) {
-	org := client.Organization{}
+	org := &client.Organization{}
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:     helper.PreCheck(t),
@@ -23,19 +22,23 @@ func TestAccOrganization(t *testing.T) {
 		Steps: []resource.TestStep{
 			{
 				Config: func(org *client.Organization) string {
-					org.Name = fmt.Sprintf("test-%s", acctest.RandString(10))
-					org.TimeZone = "London"
+					*org = client.Organization{
+						Name:     fmt.Sprintf("test-%s", helper.RandString(10)),
+						TimeZone: "London",
+					}
 					return config(org)
-				}(&org),
-				Check: checks(org),
+				}(org),
+				Check: checks(*org),
 			},
 			{
 				Config: func(org *client.Organization) string {
-					org.Name = fmt.Sprintf("test-%s", acctest.RandString(10))
-					org.TimeZone = "Lisbon"
+					*org = client.Organization{
+						Name:     fmt.Sprintf("test-%s", helper.RandString(10)),
+						TimeZone: "Lisbon",
+					}
 					return config(org)
-				}(&org),
-				Check: checks(org),
+				}(org),
+				Check: checks(*org),
 			},
 			{
 				ResourceName:      resourceName,
@@ -48,10 +51,10 @@ func TestAccOrganization(t *testing.T) {
 
 func config(org *client.Organization) string {
 	return fmt.Sprintf(`
-resource "hirefire_organization" "foobar" {
-	name = "%s"
-	time_zone = "%s"
-}`, org.Name, org.TimeZone)
+		resource "hirefire_organization" "foobar" {
+			name = "%s"
+			time_zone = "%s"
+		}`, org.Name, org.TimeZone)
 }
 
 func checks(org client.Organization) resource.TestCheckFunc {

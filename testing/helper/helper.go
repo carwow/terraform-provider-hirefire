@@ -2,14 +2,17 @@ package helper
 
 import (
 	"fmt"
+	"math/rand"
 	"os"
 	"path/filepath"
 	"reflect"
 	"runtime"
+	"strconv"
 	"testing"
 
 	"github.com/carwow/terraform-provider-hirefire/client"
 	"github.com/carwow/terraform-provider-hirefire/provider"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/acctest"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
 	"github.com/hashicorp/terraform-plugin-sdk/terraform"
 )
@@ -61,4 +64,30 @@ func StringOrEmpty(str *string) string {
 		return ""
 	}
 	return *str
+}
+
+func ItoaOrZero(n *int) string {
+	if n == nil {
+		return "0"
+	}
+	return strconv.Itoa(*n)
+}
+
+func BoolOrFalse(b *bool) string {
+	if b == nil {
+		return "false"
+	}
+	return strconv.FormatBool(*b)
+}
+
+func RandString(size int) string {
+	return acctest.RandString(size)
+}
+
+func RandBool() bool {
+	return rand.Intn(2) == 0
+}
+
+func RandInt(from, to int) int {
+	return from + rand.Intn(to+1)
 }

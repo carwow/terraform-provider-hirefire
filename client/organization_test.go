@@ -12,8 +12,8 @@ func TestGetOrganization(t *testing.T) {
 		assert.Equals(t, req.URL.String(), "/organizations/ID-123")
 		rw.Write([]byte(`{
 			"organization": {
-				"id": "ID-123",
-				"name": "carwow",
+				"id":        "ID-123",
+				"name":      "carwow",
 				"time_zone": "Europe/London"
 			}
 		}`))

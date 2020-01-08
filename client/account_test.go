@@ -12,7 +12,7 @@ func TestGetAccount(t *testing.T) {
 		assert.Equals(t, req.URL.String(), "/accounts/ID-123")
 		rw.Write([]byte(`{
 			"account": {
-				"id": "ID-123",
+				"id":              "ID-123",
 				"organization_id": "ID-999"
 			}
 		}`))
