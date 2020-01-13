@@ -60,3 +60,16 @@ and run with:
 env $(cat .env) go test -v ./...
 env $(cat .env) go test -v ./resources/application # to run tests for a single resource
 ```
+
+
+Release
+---
+
+Using GitHub's [hub] command, change `v0.X.X` to the appropriate version:
+
+```
+env GOOS=linux GOARCH=amd64 go build -o terraform-provider-hirefire_v0.X.X_linux_amd64
+hub release create v0.X.X
+```
+
+Then upload the file(s) to the GitHub's release that was just created.
