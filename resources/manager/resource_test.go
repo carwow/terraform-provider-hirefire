@@ -67,6 +67,29 @@ func TestAccManager(t *testing.T) {
 				Check: checks(*manager),
 			},
 			{
+				Config: func(orgName string, manager *client.Manager) string {
+					*manager = client.Manager{
+						Name:    fmt.Sprintf("test-%s", helper.RandString(10)),
+						Type:    "Manager::Web::Logplex::Load",
+						Enabled: true,
+						Minimum: 2,
+						Maximum: 10,
+
+						LastMinutes:          ptr.Int(5),
+						MinimumLoad:          ptr.Int(40),
+						MaximumLoad:          ptr.Int(85),
+						UpscaleQuantity:      ptr.Int(5),
+						DownscaleQuantity:    ptr.Int(1),
+						UpscaleSensitivity:   ptr.Int(2),
+						DownscaleSensitivity: ptr.Int(1),
+						UpscaleTimeout:       ptr.Int(1),
+						DownscaleTimeout:     ptr.Int(2),
+					}
+					return config(orgName, manager)
+				}(orgName, manager),
+				Check: checks(*manager),
+			},
+			{
 				ResourceName:      resourceName,
 				ImportState:       true,
 				ImportStateVerify: true,
@@ -151,6 +174,28 @@ func config(orgName string, manager *client.Manager) string {
 			*manager.UpscaleTimeout,
 			*manager.DownscaleTimeout,
 		))
+	case "Manager::Web::Logplex::Load":
+		return configBase(orgName, manager, fmt.Sprintf(`
+			last_minutes          = %d
+			minimum_load          = %d
+			maximum_load          = %d
+			upscale_quantity      = %d
+			downscale_quantity    = %d
+			upscale_sensitivity   = %d
+			downscale_sensitivity = %d
+			upscale_timeout       = %d
+			downscale_timeout     = %d
+			`,
+			*manager.LastMinutes,
+			*manager.MinimumLoad,
+			*manager.MaximumLoad,
+			*manager.UpscaleQuantity,
+			*manager.DownscaleQuantity,
+			*manager.UpscaleSensitivity,
+			*manager.DownscaleSensitivity,
+			*manager.UpscaleTimeout,
+			*manager.DownscaleTimeout,
+		))
 	default:
 		return configBase(orgName, manager, "")
 	}
@@ -179,6 +224,7 @@ func checkAttributes(manager client.Manager) resource.TestCheckFunc {
 		"maximum_load":          helper.ItoaOrZero(manager.MaximumLoad),
 		"minimum_apdex":         helper.ItoaOrZero(manager.MinimumApdex),
 		"maximum_apdex":         helper.ItoaOrZero(manager.MaximumApdex),
+		"last_minutes":          helper.ItoaOrZero(manager.LastMinutes),
 		"ratio":                 helper.ItoaOrZero(manager.Ratio),
 		"decrementable":         helper.BoolOrFalse(manager.Decrementable),
 		"url":                   helper.StringOrEmpty(manager.Url),

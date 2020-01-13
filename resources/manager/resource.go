@@ -101,6 +101,11 @@ func Resource() *schema.Resource {
 				Type:     schema.TypeInt,
 				Optional: true,
 			},
+			"last_minutes": &schema.Schema{
+				Type:         schema.TypeInt,
+				Optional:     true,
+				ValidateFunc: validation.IntInSlice([]int{1, 5, 15}),
+			},
 			"ratio": &schema.Schema{
 				Type:     schema.TypeInt,
 				Optional: true,
@@ -188,6 +193,7 @@ func setAttributes(d *schema.ResourceData, manager *client.Manager) {
 	d.Set("maximum_load", manager.MaximumLoad)
 	d.Set("minimum_apdex", manager.MinimumApdex)
 	d.Set("maximum_apdex", manager.MaximumApdex)
+	d.Set("last_minutes", manager.LastMinutes)
 	d.Set("ratio", manager.Ratio)
 	d.Set("decrementable", manager.Decrementable)
 	d.Set("url", manager.Url)
@@ -265,6 +271,11 @@ func getAttributes(d *schema.ResourceData) client.Manager {
 	if v, ok := d.GetOk("maximum_apdex"); ok {
 		value := v.(int)
 		manager.MaximumApdex = &value
+	}
+
+	if v, ok := d.GetOk("last_minutes"); ok {
+		value := v.(int)
+		manager.LastMinutes = &value
 	}
 
 	if v, ok := d.GetOk("ratio"); ok {
