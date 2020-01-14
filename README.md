@@ -68,8 +68,9 @@ Release
 Using GitHub's [hub] command, change `v0.X.X` to the appropriate version:
 
 ```
-env GOOS=linux GOARCH=amd64 go build -o terraform-provider-hirefire_v0.X.X_linux_amd64
-hub release create v0.X.X
+VERSION=vX.X.X # Set the version you intent to release
+env GOOS=linux GOARCH=amd64 go build -o terraform-provider-hirefire_$VERSION_linux_amd64
+hub release create $VERSION
 ```
 
 Then upload the file(s) to the GitHub's release that was just created.
