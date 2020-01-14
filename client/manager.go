@@ -23,6 +23,7 @@ type Manager struct {
 	MaximumLoad          *int    `json:"maximum_load"`
 	MinimumApdex         *int    `json:"minimum_apdex"`
 	MaximumApdex         *int    `json:"maximum_apdex"`
+	LastMinutes          *int    `json:"last_minutes"`
 	Ratio                *int    `json:"ratio"`
 	Decrementable        *bool   `json:"decrementable"`
 	Url                  *string `json:"url"`
