@@ -89,9 +89,9 @@ Then upload the file(s) to the GitHub's release that was just created.
 Contributing
 ---
 
-[Pull requests](https://github.com/carwow/terraform-provider-hirefire/pulls) are very welcome!
+[Pull requests] are very welcome!
 
-Please report bugs in a [new issue](https://github.com/carwow/terraform-provider-hirefire/issues/new).
+Please report bugs in a [new issue].
 
 Everyone is expected to follow the [code of conduct].
 
