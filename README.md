@@ -84,3 +84,11 @@ Using GitHub's [hub] command, change `vX.X.X` to the appropriate version:
 Then upload the file(s) to the GitHub's release that was just created.
 
 [hub]: https://github.com/github/hub
+
+
+Contributing
+---
+
+[Pull requests](https://github.com/carwow/terraform-provider-hirefire/pulls) are very welcome!
+
+Please report bugs in a [new issue](https://github.com/carwow/terraform-provider-hirefire/issues/new).
