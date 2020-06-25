@@ -32,7 +32,8 @@ Usage
       api_key = "your-key" // or set environment variable HIREFIRE_API_KEY
     }
 
-*For resources documentation, see the code under [resources] directory for now.*
+For resources documentation, see the code under [resources] directory, and
+consult the [HireFire API] documenation for more details.
 
 [resources]: https://github.com/carwow/terraform-provider-hirefire/tree/master/resources
 
