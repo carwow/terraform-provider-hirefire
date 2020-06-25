@@ -6,6 +6,7 @@ import (
 	"github.com/carwow/terraform-provider-hirefire/resources/application"
 	"github.com/carwow/terraform-provider-hirefire/resources/manager"
 	"github.com/carwow/terraform-provider-hirefire/resources/organization"
+	"github.com/carwow/terraform-provider-hirefire/resources/time_range"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
 )
 
@@ -24,6 +25,7 @@ func Provider() *schema.Provider {
 			"hirefire_account":      account.Resource(),
 			"hirefire_application":  application.Resource(),
 			"hirefire_manager":      manager.Resource(),
+			"hirefire_time_range":   time_range.Resource(),
 		},
 
 		ConfigureFunc: config.Init,
