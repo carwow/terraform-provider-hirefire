@@ -92,3 +92,9 @@ Contributing
 [Pull requests](https://github.com/carwow/terraform-provider-hirefire/pulls) are very welcome!
 
 Please report bugs in a [new issue](https://github.com/carwow/terraform-provider-hirefire/issues/new).
+
+Everyone is expected to follow the [code of conduct].
+
+[Pull requests]: https://github.com/carwow/terraform-provider-hirefire/pulls
+[new issue]: https://github.com/carwow/terraform-provider-hirefire/issues/new
+[code of conduct]: https://github.com/carwow/terraform-provider-hirefire/tree/master/CODE_OF_CONDUCT.md
