@@ -111,7 +111,7 @@ func configBase(orgName string, manager *client.Manager, managerAttributes strin
 
 		resource "hirefire_application" "foobar" {
 			account_id = hirefire_account.foobar.id
-			name = "foobar"
+			name = "foobar-manager"
 		}
 
 		resource "hirefire_manager" "foobar" {
