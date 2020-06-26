@@ -61,7 +61,7 @@ func config(orgName string, recipient *client.Recipient) string {
 
 		resource "hirefire_application" "foobar" {
 			account_id = hirefire_account.foobar.id
-			name = "foobar"
+			name = "foobar-recipient"
 		}
 
 		resource "hirefire_recipient" "foobar" {

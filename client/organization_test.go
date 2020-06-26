@@ -32,5 +32,4 @@ func TestGetOrganization(t *testing.T) {
 		TimeZone: "Europe/London",
 	}
 	assert.Equals(t, expected, organization)
-
 }

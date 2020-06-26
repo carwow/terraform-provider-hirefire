@@ -131,5 +131,4 @@ func TestGetManagerEverything(t *testing.T) {
 		NotifyAfter:          ptr.Int(10),
 	}
 	assert.Equals(t, expected, manager)
-
 }

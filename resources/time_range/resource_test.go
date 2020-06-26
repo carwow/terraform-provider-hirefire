@@ -84,12 +84,12 @@ func config(orgName string, timeRange *client.TimeRange) string {
 
 		resource "hirefire_application" "foobar" {
 			account_id = hirefire_account.foobar.id
-			name = "foobar"
+			name = "foobar-time-range"
 		}
 
 		resource "hirefire_manager" "foobar" {
 			application_id = hirefire_application.foobar.id
-			name = "foobar"
+			name = "foobar-time-range"
 			type = "Manager::Web::Logplex::RPM"
 			enabled = false
 			minimum = 1

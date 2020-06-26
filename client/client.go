@@ -16,6 +16,7 @@ type Client struct {
 	Manager      *ManagerResource
 	TimeRange    *TimeRangeResource
 	Recipient    *RecipientResource
+	User         *UserResource
 }
 
 const DefaultURL = "https://api.hirefire.io/"
@@ -38,6 +39,7 @@ func New(apiKey string) *Client {
 	client.Manager = &ManagerResource{client: client}
 	client.TimeRange = &TimeRangeResource{client: client}
 	client.Recipient = &RecipientResource{client: client}
+	client.User = &UserResource{client: client}
 
 	return client
 }
@@ -59,12 +61,15 @@ func (c *Client) delete(path string, v ...interface{}) (*req.Resp, error) {
 }
 
 func (c *Client) getResource(path string, id string, wrapped interface{}) error {
+	if id == "" {
+		return fmt.Errorf("ID can't be empty")
+	}
 	res, err := c.get(path + "/" + id)
 	if err != nil {
 		return err
 	}
 	if res.Response().StatusCode != 200 {
-		return fmt.Errorf("%s", res.String())
+		return fmt.Errorf("%d: %s", res.Response().StatusCode, res.String())
 	}
 
 	err = res.ToJSON(&wrapped)
@@ -81,7 +86,7 @@ func (c *Client) createResource(path string, wrapped interface{}) error {
 		return err
 	}
 	if res.Response().StatusCode != 201 {
-		return fmt.Errorf("%s", res.String())
+		return fmt.Errorf("%d: %s", res.Response().StatusCode, res.String())
 	}
 
 	err = res.ToJSON(&wrapped)
@@ -93,12 +98,15 @@ func (c *Client) createResource(path string, wrapped interface{}) error {
 }
 
 func (c *Client) updateResource(path string, id string, wrapped interface{}) error {
+	if id == "" {
+		return fmt.Errorf("ID can't be empty")
+	}
 	res, err := c.update(path+"/"+id, req.BodyJSON(&wrapped))
 	if err != nil {
 		return err
 	}
 	if res.Response().StatusCode != 200 {
-		return fmt.Errorf("%s", res.String())
+		return fmt.Errorf("%d: %s", res.Response().StatusCode, res.String())
 	}
 
 	err = res.ToJSON(&wrapped)
@@ -110,12 +118,15 @@ func (c *Client) updateResource(path string, id string, wrapped interface{}) err
 }
 
 func (c *Client) deleteResource(path string, id string) error {
+	if id == "" {
+		return fmt.Errorf("ID can't be empty")
+	}
 	res, err := c.delete(path + "/" + id)
 	if err != nil {
 		return err
 	}
 	if res.Response().StatusCode != 200 {
-		return fmt.Errorf("%s", res.String())
+		return fmt.Errorf("%d: %s", res.Response().StatusCode, res.String())
 	}
 
 	return nil

@@ -7,14 +7,14 @@ import (
 	"testing"
 )
 
-func TestGetRecipient(t *testing.T) {
+func TestGetUser(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(rw http.ResponseWriter, req *http.Request) {
-		assert.Equals(t, req.URL.String(), "/recipients/ID-123")
+		assert.Equals(t, req.URL.String(), "/users/ID-123")
 		rw.Write([]byte(`{
-			"recipient": {
-				"id":             "ID-123",
-				"application_id": "ID-456",
-				"email":          "test@example.com"
+			"user": {
+				"id":            "ID-123",
+				"email":         "test@example.com",
+				"notifications": true
 			}
 		}`))
 	}))
@@ -23,13 +23,13 @@ func TestGetRecipient(t *testing.T) {
 	client := New("secret")
 	client.URL = server.URL + "/"
 
-	recipient, err := client.Recipient.Get("ID-123")
+	user, err := client.User.Get("ID-123")
 	assert.Ok(t, err)
 
-	expected := &Recipient{
+	expected := &User{
 		Id:            "ID-123",
-		ApplicationId: "ID-456",
 		Email:         "test@example.com",
+		Notifications: true,
 	}
-	assert.Equals(t, expected, recipient)
+	assert.Equals(t, expected, user)
 }

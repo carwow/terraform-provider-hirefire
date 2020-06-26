@@ -30,5 +30,4 @@ func TestGetAccount(t *testing.T) {
 		OrganizationId: "ID-999",
 	}
 	assert.Equals(t, expected, account)
-
 }
