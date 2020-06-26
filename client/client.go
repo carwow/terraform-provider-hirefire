@@ -15,6 +15,7 @@ type Client struct {
 	Application  *ApplicationResource
 	Manager      *ManagerResource
 	TimeRange    *TimeRangeResource
+	Recipient    *RecipientResource
 }
 
 const DefaultURL = "https://api.hirefire.io/"
@@ -36,6 +37,7 @@ func New(apiKey string) *Client {
 	client.Application = &ApplicationResource{client: client}
 	client.Manager = &ManagerResource{client: client}
 	client.TimeRange = &TimeRangeResource{client: client}
+	client.Recipient = &RecipientResource{client: client}
 
 	return client
 }
