@@ -43,6 +43,26 @@ func TestAccTimeRange(t *testing.T) {
 				Check: checks(*timeRange),
 			},
 			{
+				Config: func(orgName string, timeRange *client.TimeRange) string {
+					*timeRange = client.TimeRange{
+						FromMinute:  helper.RandInt(15, 30),
+						UntilMinute: helper.RandInt(90, 120),
+						Minimum:     helper.RandInt(1, 3),
+						Maximum:     helper.RandInt(4, 6),
+						Position:    helper.RandInt(0, 2),
+						Monday:      helper.RandBool(),
+						Tuesday:     helper.RandBool(),
+						Wednesday:   helper.RandBool(),
+						Thursday:    helper.RandBool(),
+						Friday:      helper.RandBool(),
+						Saturday:    helper.RandBool(),
+						Sunday:      helper.RandBool(),
+					}
+					return config(orgName, timeRange)
+				}(orgName, timeRange),
+				Check: checks(*timeRange),
+			},
+			{
 				ResourceName:      resourceName,
 				ImportState:       true,
 				ImportStateVerify: true,
