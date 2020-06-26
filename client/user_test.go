@@ -32,5 +32,4 @@ func TestGetUser(t *testing.T) {
 		Notifications: true,
 	}
 	assert.Equals(t, expected, user)
-
 }

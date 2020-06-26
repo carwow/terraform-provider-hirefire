@@ -54,5 +54,4 @@ func TestGetTimeRange(t *testing.T) {
 		Sunday:      false,
 	}
 	assert.Equals(t, expected, timeRange)
-
 }

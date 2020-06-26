@@ -32,5 +32,4 @@ func TestGetRecipient(t *testing.T) {
 		Email:         "test@example.com",
 	}
 	assert.Equals(t, expected, recipient)
-
 }

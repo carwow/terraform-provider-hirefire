@@ -79,5 +79,4 @@ func TestGetApplicationEverything(t *testing.T) {
 		ResolvedIssueNotifications: true,
 	}
 	assert.Equals(t, expected, application)
-
 }
