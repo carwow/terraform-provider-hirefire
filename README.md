@@ -63,11 +63,12 @@ then create an `.env` file with:
 
     TF_ACC=on
     HIREFIRE_API_KEY=your-key
-
-If testing the user data source also append this to the `.env` file:
-
+    # The following variables are optional.
+    # For user data source:
     HIREFIRE_TEST_USER_ID=user-id
     HIREFIRE_TEST_USER_EMAIL=user-email
+    # For membership resource:
+    HIREFIRE_TEST_MEMBERSHIP_USER_ID=another-user-id
 
 and run with:
 
