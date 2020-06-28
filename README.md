@@ -10,18 +10,16 @@ Install
 
 Download from [releases] page and install in [Terraform's plugin directory].
 
-For example, change `x.x.x` with latest version:
+The [install.sh] script will do this for you. Download the file, change `x.x.x`
+to the latest version, and run it like:
 
-    cd ~/.terraform.d/plugins
-    VERSION=x.x.x
-    test -e terraform-provider-hirefire_v${VERSION} && exit || true
-    wget -O terraform-provider-hirefire_v${VERSION} https://github.com/carwow/terraform-provider-hirefire/releases/download/v${VERSION}/terraform-provider-hirefire_v${VERSION}_linux_amd64
-    chmod +x terraform-provider-hirefire_v${VERSION}
+    ./install.sh x.x.x
 
 Then subscribe to Releases only notifications to be alerted of new releases.
 
 [releases]: https://github.com/carwow/terraform-provider-hirefire/releases
 [Terraform's plugin directory]: https://www.terraform.io/docs/configuration/providers.html#third-party-plugins
+[install.sh]: https://github.com/carwow/terraform-provider-hirefire/blob/master/install.sh
 
 
 Usage
