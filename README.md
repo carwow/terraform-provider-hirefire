@@ -82,13 +82,15 @@ or to run tests for a single resource:
 Release
 ---
 
-Using GitHub's [hub] command, change `vX.X.X` to the appropriate version:
+Change `x.x.x` to the appropriate version, and build the binaries by running:
 
-    VERSION=vX.X.X # Set the version you intent to release
-    env GOOS=linux GOARCH=amd64 go build -o terraform-provider-hirefire_${VERSION}_${GOOS}_${GOARCH}
-    hub release create $VERSION
+    rake release[x.x.x]
 
-Then upload the file(s) to the GitHub's release that was just created.
+If you have GitHub's [hub] command, a GitHub release will be created for you.
+Otherwise, create the GitHub release.
+
+Then upload the binaries to the GitHub release. You **always** need to upload
+the binaries, even if the release was created by hub.
 
 [hub]: https://github.com/github/hub
 
