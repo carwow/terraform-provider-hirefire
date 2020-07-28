@@ -142,6 +142,14 @@ func Resource() *schema.Resource {
 				Type:     schema.TypeInt,
 				Optional: true,
 			},
+			"upscale_limit": &schema.Schema{
+				Type:     schema.TypeInt,
+				Optional: true,
+			},
+			"downscale_limit": &schema.Schema{
+				Type:     schema.TypeInt,
+				Optional: true,
+			},
 			"scale_up_on_503": &schema.Schema{
 				Type:     schema.TypeBool,
 				Optional: true,
@@ -203,6 +211,8 @@ func setAttributes(d *schema.ResourceData, manager *client.Manager) {
 	d.Set("downscale_sensitivity", manager.DownscaleSensitivity)
 	d.Set("upscale_timeout", manager.UpscaleTimeout)
 	d.Set("downscale_timeout", manager.DownscaleTimeout)
+	d.Set("upscale_limit", manager.UpscaleLimit)
+	d.Set("downscale_limit", manager.DownscaleLimit)
 	d.Set("scale_up_on_503", manager.ScaleUpOn503)
 	d.Set("new_relic_api_key", manager.NewRelicApiKey)
 	d.Set("new_relic_account_id", manager.NewRelicAccountId)
@@ -321,6 +331,16 @@ func getAttributes(d *schema.ResourceData) client.Manager {
 	if v, ok := d.GetOk("downscale_timeout"); ok {
 		value := v.(int)
 		manager.DownscaleTimeout = &value
+	}
+
+	if v, ok := d.GetOk("upscale_limit"); ok {
+		value := v.(int)
+		manager.UpscaleLimit = &value
+	}
+
+	if v, ok := d.GetOk("downscale_limit"); ok {
+		value := v.(int)
+		manager.DownscaleLimit = &value
 	}
 
 	if v, ok := d.GetOk("scale_up_on_503"); ok {
