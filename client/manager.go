@@ -33,6 +33,8 @@ type Manager struct {
 	DownscaleSensitivity *int    `json:"downscale_sensitivity"`
 	UpscaleTimeout       *int    `json:"upscale_timeout"`
 	DownscaleTimeout     *int    `json:"downscale_timeout"`
+	UpscaleLimit         *int    `json:"upscale_limit"`
+	DownscaleLimit       *int    `json:"downscale_limit"`
 	ScaleUpOn503         *bool   `json:"scale_up_on_503"`
 	NewRelicApiKey       *string `json:"new_relic_api_key"`
 	NewRelicAccountId    *string `json:"new_relic_account_id"`

@@ -90,6 +90,27 @@ func TestAccManager(t *testing.T) {
 				Check: checks(*manager),
 			},
 			{
+				Config: func(orgName string, manager *client.Manager) string {
+					*manager = client.Manager{
+						Name:    fmt.Sprintf("test-%s", helper.RandString(10)),
+						Type:    "Manager::Worker::HireFire::JobQueue",
+						Enabled: true,
+						Minimum: 2,
+						Maximum: 10,
+
+						Decrementable:        ptr.Bool(true),
+						UpscaleSensitivity:   ptr.Int(2),
+						DownscaleSensitivity: ptr.Int(1),
+						UpscaleTimeout:       ptr.Int(1),
+						DownscaleTimeout:     ptr.Int(2),
+						UpscaleLimit:         ptr.Int(3),
+						DownscaleLimit:       ptr.Int(4),
+					}
+					return config(orgName, manager)
+				}(orgName, manager),
+				Check: checks(*manager),
+			},
+			{
 				ResourceName:      resourceName,
 				ImportState:       true,
 				ImportStateVerify: true,
@@ -196,6 +217,24 @@ func config(orgName string, manager *client.Manager) string {
 			*manager.UpscaleTimeout,
 			*manager.DownscaleTimeout,
 		))
+	case "Manager::Worker::HireFire::JobQueue":
+		return configBase(orgName, manager, fmt.Sprintf(`
+			decrementable         = %t
+			upscale_sensitivity   = %d
+			downscale_sensitivity = %d
+			upscale_timeout       = %d
+			downscale_timeout     = %d
+			upscale_limit         = %d
+			downscale_limit       = %d
+			`,
+			*manager.Decrementable,
+			*manager.UpscaleSensitivity,
+			*manager.DownscaleSensitivity,
+			*manager.UpscaleTimeout,
+			*manager.DownscaleTimeout,
+			*manager.UpscaleLimit,
+			*manager.DownscaleLimit,
+		))
 	default:
 		return configBase(orgName, manager, "")
 	}
@@ -234,6 +273,8 @@ func checkAttributes(manager client.Manager) resource.TestCheckFunc {
 		"downscale_sensitivity": helper.ItoaOrZero(manager.DownscaleSensitivity),
 		"upscale_timeout":       helper.ItoaOrZero(manager.UpscaleTimeout),
 		"downscale_timeout":     helper.ItoaOrZero(manager.DownscaleTimeout),
+		"upscale_limit":         helper.ItoaOrZero(manager.UpscaleLimit),
+		"downscale_limit":       helper.ItoaOrZero(manager.DownscaleLimit),
 		"scale_up_on_503":       helper.BoolOrFalse(manager.ScaleUpOn503),
 		"new_relic_api_key":     helper.StringOrEmpty(manager.NewRelicApiKey),
 		"new_relic_account_id":  helper.StringOrEmpty(manager.NewRelicAccountId),
