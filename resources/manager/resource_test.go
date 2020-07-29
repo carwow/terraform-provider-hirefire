@@ -99,6 +99,7 @@ func TestAccManager(t *testing.T) {
 						Maximum: 10,
 
 						Decrementable:        ptr.Bool(true),
+						Ratio:                ptr.Int(10),
 						UpscaleSensitivity:   ptr.Int(2),
 						DownscaleSensitivity: ptr.Int(1),
 						UpscaleTimeout:       ptr.Int(1),
@@ -220,6 +221,7 @@ func config(orgName string, manager *client.Manager) string {
 	case "Manager::Worker::HireFire::JobQueue":
 		return configBase(orgName, manager, fmt.Sprintf(`
 			decrementable         = %t
+			ratio                 = %d
 			upscale_sensitivity   = %d
 			downscale_sensitivity = %d
 			upscale_timeout       = %d
@@ -228,6 +230,7 @@ func config(orgName string, manager *client.Manager) string {
 			downscale_limit       = %d
 			`,
 			*manager.Decrementable,
+			*manager.Ratio,
 			*manager.UpscaleSensitivity,
 			*manager.DownscaleSensitivity,
 			*manager.UpscaleTimeout,
