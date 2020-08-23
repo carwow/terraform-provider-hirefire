@@ -1,0 +1,38 @@
+version: 2.1
+
+orbs:
+  go: circleci/go@1
+
+workflows:
+  test:
+    jobs:
+      - test
+
+  release:
+    jobs:
+      - release:
+          # Only run this job on git tag pushes
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+\.[0-9]+\.[0-9]+/
+
+jobs:
+  test:
+    executor:
+      name: go/default
+      tag: '1.15'
+    steps:
+      - checkout
+      - go/mod-download-cached
+      - run: go mod tidy -v 2>&1 | [ $(wc -c) -eq 0 ]
+      - go/test:
+          failfast: true
+
+  release:
+    docker:
+      - image: circleci/golang:1.15
+    steps:
+      - checkout
+      - run: curl -sL https://git.io/goreleaser | bash

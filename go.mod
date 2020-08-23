@@ -1,6 +1,6 @@
 module github.com/carwow/terraform-provider-hirefire
 
-go 1.13
+go 1.15
 
 require (
 	github.com/hashicorp/terraform-plugin-sdk v1.2.0
