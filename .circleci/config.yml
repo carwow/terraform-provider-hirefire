@@ -26,9 +26,12 @@ jobs:
     steps:
       - checkout
       - go/mod-download-cached
-      - run: go mod tidy -v 2>&1 | [ $(wc -c) -eq 0 ]
+      - run:
+          name: go mod tidy
+          command: go mod tidy -v 2>&1 | [ $(wc -c) -eq 0 ]
       - go/test:
           failfast: true
+          packages: '-v ./...'
 
   release:
     docker:
