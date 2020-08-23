@@ -6,7 +6,18 @@ orbs:
 workflows:
   test:
     jobs:
-      - test
+      - test:
+          filters:
+            branches:
+              ignore: master
+
+  test-acc:
+    jobs:
+      - test:
+          acceptance: 'on'
+          filters:
+            branches:
+              only: master
 
   release:
     jobs:
@@ -20,6 +31,13 @@ workflows:
 
 jobs:
   test:
+    parameters:
+      acceptance:
+        type: string
+        default: ''
+        description: If set (to anything), it will run acceptance tests.
+    environment:
+      TF_ACC: << parameters.acceptance >>
     executor:
       name: go/default
       tag: '1.15'
