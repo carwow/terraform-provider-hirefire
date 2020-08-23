@@ -57,4 +57,9 @@ jobs:
       - image: circleci/golang:1.15
     steps:
       - checkout
-      - run: curl -sL https://git.io/goreleaser | bash
+      - run:
+          name: gpg import
+          command: echo -e "$GPG_KEY" | gpg --import
+      - run:
+          name: goreleaser
+          command: curl -sL https://git.io/goreleaser | bash
