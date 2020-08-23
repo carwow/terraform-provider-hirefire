@@ -14,6 +14,7 @@ workflows:
   test-acc:
     jobs:
       - test:
+          name: test-acc
           acceptance: 'on'
           filters:
             branches:
