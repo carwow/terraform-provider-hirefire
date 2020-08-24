@@ -24,7 +24,7 @@ The following arguments are supported:
 
 The following attributes are exported:
 
-- `id` - HireFire's ID of the organization.
+- `id` - The ID of the organization assigned by HireFire.
 
 ## Import
 
