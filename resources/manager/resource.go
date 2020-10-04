@@ -85,6 +85,14 @@ func Resource() *schema.Resource {
 				Type:     schema.TypeInt,
 				Optional: true,
 			},
+			"minimum_connect_time": &schema.Schema{
+				Type:     schema.TypeInt,
+				Optional: true,
+			},
+			"maximum_connect_time": &schema.Schema{
+				Type:     schema.TypeInt,
+				Optional: true,
+			},
 			"minimum_load": &schema.Schema{
 				Type:     schema.TypeInt,
 				Optional: true,
@@ -197,6 +205,8 @@ func setAttributes(d *schema.ResourceData, manager *client.Manager) {
 	d.Set("maximum_queue_time", manager.MaximumQueueTime)
 	d.Set("minimum_response_time", manager.MinimumResponseTime)
 	d.Set("maximum_response_time", manager.MaximumResponseTime)
+	d.Set("minimum_connect_time", manager.MinimumConnectTime)
+	d.Set("maximum_connect_time", manager.MaximumConnectTime)
 	d.Set("minimum_load", manager.MinimumLoad)
 	d.Set("maximum_load", manager.MaximumLoad)
 	d.Set("minimum_apdex", manager.MinimumApdex)
@@ -261,6 +271,16 @@ func getAttributes(d *schema.ResourceData) client.Manager {
 	if v, ok := d.GetOk("maximum_response_time"); ok {
 		value := v.(int)
 		manager.MaximumResponseTime = &value
+	}
+
+	if v, ok := d.GetOk("minimum_connect_time"); ok {
+		value := v.(int)
+		manager.MinimumConnectTime = &value
+	}
+
+	if v, ok := d.GetOk("maximum_connect_time"); ok {
+		value := v.(int)
+		manager.MaximumConnectTime = &value
 	}
 
 	if v, ok := d.GetOk("minimum_load"); ok {

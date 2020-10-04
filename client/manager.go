@@ -19,6 +19,8 @@ type Manager struct {
 	MaximumQueueTime     *int    `json:"maximum_queue_time"`
 	MinimumResponseTime  *int    `json:"minimum_response_time"`
 	MaximumResponseTime  *int    `json:"maximum_response_time"`
+	MinimumConnectTime   *int    `json:"minimum_connect_time"`
+	MaximumConnectTime   *int    `json:"maximum_connect_time"`
 	MinimumLoad          *int    `json:"minimum_load"`
 	MaximumLoad          *int    `json:"maximum_load"`
 	MinimumApdex         *int    `json:"minimum_apdex"`

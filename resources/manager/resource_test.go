@@ -260,8 +260,12 @@ func checkAttributes(manager client.Manager) resource.TestCheckFunc {
 
 		"aggregation":           helper.StringOrEmpty(manager.Aggregation),
 		"percentile":            helper.ItoaOrZero(manager.Percentile),
+		"minimum_queue_time":    helper.ItoaOrZero(manager.MinimumQueueTime),
+		"maximum_queue_time":    helper.ItoaOrZero(manager.MaximumQueueTime),
 		"minimum_response_time": helper.ItoaOrZero(manager.MinimumResponseTime),
 		"maximum_response_time": helper.ItoaOrZero(manager.MaximumResponseTime),
+		"minimum_connect_time":  helper.ItoaOrZero(manager.MinimumConnectTime),
+		"maximum_connect_time":  helper.ItoaOrZero(manager.MaximumConnectTime),
 		"minimum_load":          helper.ItoaOrZero(manager.MinimumLoad),
 		"maximum_load":          helper.ItoaOrZero(manager.MaximumLoad),
 		"minimum_apdex":         helper.ItoaOrZero(manager.MinimumApdex),
