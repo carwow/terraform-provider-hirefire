@@ -1,13 +1,13 @@
 # hirefire_application
 
-Provides a HireFire Application resource. This can be used to create, modify,
+Provides a HireFire application resource. This can be used to create, modify,
 and delete applications from an account.
 
 ## Example Usage
 
 ```hcl
 resource "hirefire_application" "my_application" {
-  account_id = var.hirefire_account_id
+  account_id = hirefire_account.my_account.id
 
   name                  = heroku_app.my_application.name
   custom_domain         = heroku_domain.my_application.hostname

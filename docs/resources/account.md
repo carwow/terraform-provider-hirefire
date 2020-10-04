@@ -1,6 +1,6 @@
 # hirefire_account
 
-Provides a HireFire Account resource. This can be used to create and delete
+Provides a HireFire account resource. This can be used to create and delete
 accounts from an organization.
 
 -> This account must still be authorized in order to work with the Heroku

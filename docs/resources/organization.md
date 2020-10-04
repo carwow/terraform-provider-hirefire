@@ -1,6 +1,6 @@
 # hirefire_organization
 
-Provides a HireFire Organization resource. This can be used to create, modify,
+Provides a HireFire organization resource. This can be used to create, modify,
 and delete organizations.
 
 ## Example Usage
