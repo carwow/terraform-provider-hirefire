@@ -2,38 +2,10 @@
 
 This provider is used to configure resources supported by the [HireFire API].
 
+Documention at [Terraform registry].
+
 [HireFire API]: https://docs.hirefire.io/
-
-
-Install
----
-
-Download from [releases] page and install in [Terraform's plugin directory].
-
-The [install.sh] script will do this for you. Download the file, change `x.x.x`
-to the latest version, and run it like:
-
-    ./install.sh x.x.x
-
-Then subscribe to Releases only notifications to be alerted of new releases.
-
-[releases]: https://github.com/carwow/terraform-provider-hirefire/releases
-[Terraform's plugin directory]: https://www.terraform.io/docs/configuration/providers.html#third-party-plugins
-[install.sh]: https://github.com/carwow/terraform-provider-hirefire/blob/master/install.sh
-
-
-Usage
----
-
-    provider "hirefire" {
-      version = "~> 0.1"
-      api_key = "your-key" // or set environment variable HIREFIRE_API_KEY
-    }
-
-For resources documentation, see the code under [resources] directory, and
-consult the [HireFire API] documenation for more details.
-
-[resources]: https://github.com/carwow/terraform-provider-hirefire/tree/master/resources
+[Terraform registry]: https://registry.terraform.io/providers/carwow/hirefire/latest/docs
 
 
 Development
@@ -80,17 +52,10 @@ or to run tests for a single resource:
 Release
 ---
 
-Change `x.x.x` to the appropriate version, and build the binaries by running:
+1. Update version in [docs/index.md] if necessary and commit.
+2. Push a tag for the new version. CircleCI will do the rest.
 
-    rake release[x.x.x]
-
-If you have GitHub's [hub] command, a GitHub release will be created for you.
-Otherwise, create the GitHub release.
-
-Then upload the binaries to the GitHub release. You **always** need to upload
-the binaries, even if the release was created by hub.
-
-[hub]: https://github.com/github/hub
+[docs/index.md]: https://github.com/carwow/terraform-provider-hirefire/blob/master/docs/index.md
 
 
 Contributing
