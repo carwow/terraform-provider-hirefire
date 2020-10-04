@@ -22,8 +22,7 @@ resource "hirefire_application" "my_application" {
 The following arguments are supported:
 
 - `account_id` - (required) The ID of the account this application belongs to.
-- `name` - (required) The name of the HireFire application. (It doesn't need to
-  match the Heroku application name.)
+- `name` - (required) The name of the application as registered with Heroku.
 - `custom_domain` - (optional) The custom domain of the Heroku application, if
   any is being used.
 - `logplex_drain_token` - (optional) The Heroku drain token, if using Logplex
