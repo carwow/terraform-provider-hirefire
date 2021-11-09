@@ -48,7 +48,7 @@ Release
 1. Update version in [docs/index.md] if necessary and commit.
 2. Push a tag for the new version. CircleCI will do the rest.
 
-[docs/index.md]: https://github.com/carwow/terraform-provider-hirefire/blob/master/docs/index.md
+[docs/index.md]: https://github.com/carwow/terraform-provider-hirefire/blob/main/docs/index.md
 
 
 Contributing
@@ -62,4 +62,4 @@ Everyone is expected to follow the [code of conduct].
 
 [Pull requests]: https://github.com/carwow/terraform-provider-hirefire/pulls
 [new issue]: https://github.com/carwow/terraform-provider-hirefire/issues/new
-[code of conduct]: https://github.com/carwow/terraform-provider-hirefire/tree/master/CODE_OF_CONDUCT.md
+[code of conduct]: https://github.com/carwow/terraform-provider-hirefire/tree/main/CODE_OF_CONDUCT.md

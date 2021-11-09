@@ -12,7 +12,7 @@ workflows:
       - test:
           filters:
             branches:
-              ignore: master
+              ignore: main
 
   test-acc:
     jobs:
@@ -21,7 +21,7 @@ workflows:
           acceptance: 'on'
           filters:
             branches:
-              only: master
+              only: main
 
   release:
     jobs:
