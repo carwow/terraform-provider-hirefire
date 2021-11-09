@@ -3,6 +3,9 @@ version: 2.1
 orbs:
   go: circleci/go@1
 
+references:
+  go_version: &go_version '1.17'
+
 workflows:
   test:
     jobs:
@@ -33,6 +36,9 @@ workflows:
 jobs:
   test:
     parameters:
+      go_version:
+        type: string
+        default: *go_version
       acceptance:
         type: string
         default: ''
@@ -53,8 +59,12 @@ jobs:
           packages: '-v ./...'
 
   release:
+    parameters:
+      go_version:
+        type: string
+        default: *go_version
     docker:
-      - image: circleci/golang:1.15
+      - image: circleci/golang:<< parameters.go_version >>
     steps:
       - checkout
       - run:
