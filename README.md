@@ -11,16 +11,9 @@ Documention at [Terraform registry].
 Development
 ---
 
-Requires [Go] 1.14.x.
-
     go build .
 
 Then create a `main.tf` file and use Terraform as usual to experiment.
-
-This project uses [Go Modules] for dependency management.
-
-[Go]: https://golang.org/doc/install
-[Go Modules]: https://github.com/golang/go/wiki/Modules
 
 
 Testing
