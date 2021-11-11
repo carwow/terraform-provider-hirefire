@@ -118,12 +118,6 @@ func create(d *schema.ResourceData, m interface{}) error {
 }
 
 func read(d *schema.ResourceData, m interface{}) error {
-	app, err := config.Client(m).Application.Get(d.Id())
-	if err != nil {
-		return err
-	}
-
-	setAttributes(d, app)
 	return nil
 }
 

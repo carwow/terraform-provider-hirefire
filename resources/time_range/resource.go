@@ -121,12 +121,6 @@ func create(d *schema.ResourceData, m interface{}) error {
 }
 
 func read(d *schema.ResourceData, m interface{}) error {
-	timeRange, err := config.Client(m).TimeRange.Get(d.Id())
-	if err != nil {
-		return err
-	}
-
-	setAttributes(d, timeRange)
 	return nil
 }
 

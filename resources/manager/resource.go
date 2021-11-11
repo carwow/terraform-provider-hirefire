@@ -413,12 +413,6 @@ func create(d *schema.ResourceData, m interface{}) error {
 }
 
 func read(d *schema.ResourceData, m interface{}) error {
-	manager, err := config.Client(m).Manager.Get(d.Id())
-	if err != nil {
-		return err
-	}
-
-	setAttributes(d, manager)
 	return nil
 }
 
