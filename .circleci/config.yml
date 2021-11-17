@@ -47,7 +47,7 @@ jobs:
       TF_ACC: << parameters.acceptance >>
     executor:
       name: go/default
-      tag: '1.17'
+      tag: << parameters.go_version >>
     steps:
       - checkout
       - go/mod-download-cached
