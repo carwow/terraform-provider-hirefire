@@ -31,6 +31,7 @@ func Resource() *schema.Resource {
 			"type": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
+				ForceNew: true,
 				ValidateFunc: validation.StringInSlice([]string{
 					"Manager::Worker::HireFire::JobQueue",
 					"Manager::Web::Logplex::Load",
