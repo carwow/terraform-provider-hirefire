@@ -84,6 +84,12 @@ func RandString(size int) string {
 	return acctest.RandString(size)
 }
 
+func RandHex(size int) string {
+	return acctest.RandStringFromCharSet(size, CharSetHex)
+}
+
+const CharSetHex = "012346789abcdef"
+
 func RandBool() bool {
 	return rand.Intn(2) == 0
 }

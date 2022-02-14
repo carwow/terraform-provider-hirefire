@@ -35,8 +35,8 @@ func TestAccManager(t *testing.T) {
 						Ratio:                ptr.Int(100),
 						UpscaleSensitivity:   ptr.Int(1),
 						DownscaleSensitivity: ptr.Int(2),
-						UpscaleTimeout:       ptr.Int(2),
-						DownscaleTimeout:     ptr.Int(5),
+						UpscaleTimeout:       2,
+						DownscaleTimeout:     5,
 					}
 					return config(orgName, manager)
 				}(orgName, manager),
@@ -59,8 +59,8 @@ func TestAccManager(t *testing.T) {
 						DownscaleQuantity:    ptr.Int(1),
 						UpscaleSensitivity:   ptr.Int(2),
 						DownscaleSensitivity: ptr.Int(1),
-						UpscaleTimeout:       ptr.Int(1),
-						DownscaleTimeout:     ptr.Int(2),
+						UpscaleTimeout:       1,
+						DownscaleTimeout:     2,
 					}
 					return config(orgName, manager)
 				}(orgName, manager),
@@ -82,8 +82,8 @@ func TestAccManager(t *testing.T) {
 						DownscaleQuantity:    ptr.Int(1),
 						UpscaleSensitivity:   ptr.Int(2),
 						DownscaleSensitivity: ptr.Int(1),
-						UpscaleTimeout:       ptr.Int(1),
-						DownscaleTimeout:     ptr.Int(2),
+						UpscaleTimeout:       1,
+						DownscaleTimeout:     2,
 					}
 					return config(orgName, manager)
 				}(orgName, manager),
@@ -102,10 +102,10 @@ func TestAccManager(t *testing.T) {
 						Ratio:                ptr.Int(10),
 						UpscaleSensitivity:   ptr.Int(2),
 						DownscaleSensitivity: ptr.Int(1),
-						UpscaleTimeout:       ptr.Int(1),
-						DownscaleTimeout:     ptr.Int(2),
-						UpscaleLimit:         ptr.Int(3),
-						DownscaleLimit:       ptr.Int(4),
+						UpscaleTimeout:       0,
+						DownscaleTimeout:     2,
+						UpscaleLimit:         3,
+						DownscaleLimit:       4,
 					}
 					return config(orgName, manager)
 				}(orgName, manager),
@@ -169,8 +169,8 @@ func config(orgName string, manager *client.Manager) string {
 			*manager.Ratio,
 			*manager.UpscaleSensitivity,
 			*manager.DownscaleSensitivity,
-			*manager.UpscaleTimeout,
-			*manager.DownscaleTimeout,
+			manager.UpscaleTimeout,
+			manager.DownscaleTimeout,
 		))
 	case "Manager::Web::Logplex::QueueTime":
 		return configBase(orgName, manager, fmt.Sprintf(`
@@ -193,8 +193,8 @@ func config(orgName string, manager *client.Manager) string {
 			*manager.DownscaleQuantity,
 			*manager.UpscaleSensitivity,
 			*manager.DownscaleSensitivity,
-			*manager.UpscaleTimeout,
-			*manager.DownscaleTimeout,
+			manager.UpscaleTimeout,
+			manager.DownscaleTimeout,
 		))
 	case "Manager::Web::Logplex::Load":
 		return configBase(orgName, manager, fmt.Sprintf(`
@@ -215,8 +215,8 @@ func config(orgName string, manager *client.Manager) string {
 			*manager.DownscaleQuantity,
 			*manager.UpscaleSensitivity,
 			*manager.DownscaleSensitivity,
-			*manager.UpscaleTimeout,
-			*manager.DownscaleTimeout,
+			manager.UpscaleTimeout,
+			manager.DownscaleTimeout,
 		))
 	case "Manager::Worker::HireFire::JobQueue":
 		return configBase(orgName, manager, fmt.Sprintf(`
@@ -233,10 +233,10 @@ func config(orgName string, manager *client.Manager) string {
 			*manager.Ratio,
 			*manager.UpscaleSensitivity,
 			*manager.DownscaleSensitivity,
-			*manager.UpscaleTimeout,
-			*manager.DownscaleTimeout,
-			*manager.UpscaleLimit,
-			*manager.DownscaleLimit,
+			manager.UpscaleTimeout,
+			manager.DownscaleTimeout,
+			manager.UpscaleLimit,
+			manager.DownscaleLimit,
 		))
 	default:
 		return configBase(orgName, manager, "")
@@ -278,17 +278,17 @@ func checkAttributes(manager client.Manager) resource.TestCheckFunc {
 		"downscale_quantity":    helper.ItoaOrZero(manager.DownscaleQuantity),
 		"upscale_sensitivity":   helper.ItoaOrZero(manager.UpscaleSensitivity),
 		"downscale_sensitivity": helper.ItoaOrZero(manager.DownscaleSensitivity),
-		"upscale_timeout":       helper.ItoaOrZero(manager.UpscaleTimeout),
-		"downscale_timeout":     helper.ItoaOrZero(manager.DownscaleTimeout),
-		"upscale_limit":         helper.ItoaOrZero(manager.UpscaleLimit),
-		"downscale_limit":       helper.ItoaOrZero(manager.DownscaleLimit),
+		"upscale_timeout":       strconv.Itoa(manager.UpscaleTimeout),
+		"downscale_timeout":     strconv.Itoa(manager.DownscaleTimeout),
+		"upscale_limit":         strconv.Itoa(manager.UpscaleLimit),
+		"downscale_limit":       strconv.Itoa(manager.DownscaleLimit),
 		"scale_up_on_503":       helper.BoolOrFalse(manager.ScaleUpOn503),
 		"new_relic_api_key":     helper.StringOrEmpty(manager.NewRelicApiKey),
 		"new_relic_account_id":  helper.StringOrEmpty(manager.NewRelicAccountId),
 		"new_relic_app_id":      helper.StringOrEmpty(manager.NewRelicAppId),
-		"notify":                helper.BoolOrFalse(manager.Notify),
-		"notify_quantity":       helper.ItoaOrZero(manager.NotifyQuantity),
-		"notify_after":          helper.ItoaOrZero(manager.NotifyAfter),
+		"notify":                strconv.FormatBool(manager.Notify),
+		"notify_quantity":       strconv.Itoa(manager.NotifyQuantity),
+		"notify_after":          strconv.Itoa(manager.NotifyAfter),
 	})
 }
 

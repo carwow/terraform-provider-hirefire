@@ -53,6 +53,8 @@ func TestAccApplication(t *testing.T) {
 func TestAccApplicationEverything(t *testing.T) {
 	orgName := fmt.Sprintf("test-%s", helper.RandString(10))
 	app := &client.Application{}
+	logplexDrainToken := fmt.Sprintf("d.%s-%s-%s-%s-%s",
+		helper.RandHex(8), helper.RandHex(4), helper.RandHex(4), helper.RandHex(4), helper.RandHex(12))
 
 	resource.Test(t, resource.TestCase{
 		PreCheck:     helper.PreCheck(t),
@@ -64,7 +66,7 @@ func TestAccApplicationEverything(t *testing.T) {
 					*app = client.Application{
 						Name:                       fmt.Sprintf("test-%s", helper.RandString(10)),
 						CustomDomain:               ptr.String(fmt.Sprintf("test-%s", helper.RandString(10))),
-						LogplexDrainToken:          ptr.String(fmt.Sprintf("test-%s", helper.RandString(10))),
+						LogplexDrainToken:          ptr.String(logplexDrainToken),
 						Ssl:                        helper.RandBool(),
 						RestartCrashedDynos:        helper.RandBool(),
 						NewIssueNotifications:      helper.RandBool(),
@@ -79,7 +81,7 @@ func TestAccApplicationEverything(t *testing.T) {
 					*app = client.Application{
 						Name:                       fmt.Sprintf("test-%s", helper.RandString(10)),
 						CustomDomain:               ptr.String(fmt.Sprintf("test-%s", helper.RandString(10))),
-						LogplexDrainToken:          ptr.String(fmt.Sprintf("test-%s", helper.RandString(10))),
+						LogplexDrainToken:          ptr.String(logplexDrainToken),
 						Ssl:                        helper.RandBool(),
 						RestartCrashedDynos:        helper.RandBool(),
 						NewIssueNotifications:      helper.RandBool(),
