@@ -9,7 +9,6 @@ The HireFire provider is used to configure resources supported by the
 
 ```hcl
 provider "hirefire" {
-  version = "~> 0.3"
   api_key = "${var.hirefire_api_key}"
 }
 ```

@@ -1,0 +1,41 @@
+terraform {
+  required_providers {
+    hirefire = {
+      source = "carwow/hirefire"
+    }
+  }
+}
+
+provider "hirefire" {
+}
+
+resource "hirefire_organization" "foobar" {
+  name      = "foobar"
+  time_zone = "UTC"
+}
+
+resource "hirefire_account" "foobar" {
+  organization_id = hirefire_organization.foobar.id
+}
+
+resource "hirefire_application" "foobar" {
+  account_id = hirefire_account.foobar.id
+  name       = "foobar"
+}
+
+resource "hirefire_manager" "foobar" {
+  application_id = hirefire_application.foobar.id
+  name           = "foobar"
+  type           = "Manager::Worker::HireFire::JobQueue"
+  enabled        = false
+  minimum        = 1
+  maximum        = 10
+
+  ratio                 = 5
+  upscale_sensitivity   = 1
+  downscale_sensitivity = 2
+  upscale_timeout       = 1
+  downscale_timeout     = 2
+  upscale_limit         = 1
+  downscale_limit       = 2
+}

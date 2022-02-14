@@ -13,8 +13,18 @@ Development
 
     go build .
 
-Then create a `main.tf` file and use Terraform as usual to experiment.
+Then, create a `.terraformrc` file with:
 
+    provider_installation {
+      dev_overrides {
+        "carwow/hirefire" = "<ABSOLUTE-PATH-TO-PROJECT>"
+      }
+    }
+
+Finally, create a `main.tf` file (see `main.tf.example`) and call:
+
+    terraform init
+    HIREFIRE_API_KEY=your-key TF_CLI_CONFIG_FILE=.terraformrc terraform apply
 
 Testing
 ---
@@ -45,8 +55,7 @@ or to run tests for a single resource:
 Release
 ---
 
-1. Update version in [docs/index.md] if necessary and commit.
-2. Push a tag for the new version. CircleCI will do the rest.
+Push a tag for the new version. CircleCI will do the rest.
 
 [docs/index.md]: https://github.com/carwow/terraform-provider-hirefire/blob/main/docs/index.md
 
