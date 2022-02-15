@@ -34,6 +34,9 @@ func New(apiKey string) *Client {
 		},
 	}
 
+	// Uncomment to dump all HTTP requests and responses
+	// req.Debug = true
+
 	client.Organization = &OrganizationResource{client: client}
 	client.Account = &AccountResource{client: client}
 	client.Application = &ApplicationResource{client: client}
@@ -89,6 +92,8 @@ func (c *Client) createResource(path string, wrapped interface{}) error {
 	}
 	if res.Response().StatusCode != 201 {
 		return fmt.Errorf("%d: %s", res.Response().StatusCode, res.String())
+		// Uncomment to dump full HTTP request and response with error message
+		// return fmt.Errorf("%d: %s\n%s", res.Response().StatusCode, res.String(), res.Dump())
 	}
 
 	err = res.ToJSON(&wrapped)

@@ -346,22 +346,22 @@ func getAttributes(d *schema.ResourceData) client.Manager {
 
 	if v, ok := d.GetOk("upscale_timeout"); ok {
 		value := v.(int)
-		manager.UpscaleTimeout = &value
+		manager.UpscaleTimeout = value
 	}
 
 	if v, ok := d.GetOk("downscale_timeout"); ok {
 		value := v.(int)
-		manager.DownscaleTimeout = &value
+		manager.DownscaleTimeout = value
 	}
 
 	if v, ok := d.GetOk("upscale_limit"); ok {
 		value := v.(int)
-		manager.UpscaleLimit = &value
+		manager.UpscaleLimit = value
 	}
 
 	if v, ok := d.GetOk("downscale_limit"); ok {
 		value := v.(int)
-		manager.DownscaleLimit = &value
+		manager.DownscaleLimit = value
 	}
 
 	if v, ok := d.GetOk("scale_up_on_503"); ok {
@@ -386,17 +386,17 @@ func getAttributes(d *schema.ResourceData) client.Manager {
 
 	if v, ok := d.GetOk("notify"); ok {
 		value := v.(bool)
-		manager.Notify = &value
+		manager.Notify = value
 	}
 
 	if v, ok := d.GetOk("notify_quantity"); ok {
 		value := v.(int)
-		manager.NotifyQuantity = &value
+		manager.NotifyQuantity = value
 	}
 
 	if v, ok := d.GetOk("notify_after"); ok {
 		value := v.(int)
-		manager.NotifyAfter = &value
+		manager.NotifyAfter = value
 	}
 
 	return manager

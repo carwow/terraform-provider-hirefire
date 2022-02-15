@@ -1,6 +1,8 @@
-terraform-provider-hirefire*
-terraform.tfstate*
-.terraform
-main.tf
-.env
+/terraform-provider-hirefire
+/terraform.tfstate*
+/.terraform.lock.hcl
+/.terraformrc
+/.terraform
+/main.tf
+/.env
 /dist
