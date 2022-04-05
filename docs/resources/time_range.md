@@ -9,7 +9,6 @@ and delete time ranges from a manager.
 resource "hirefire_time_range" "my_time_range" {
   manager_id = hirefire_manager.my_manager.id
 
-  email = "example@example.com"
   from_minute  = 415 // 06:55
   until_minute = 435 // 07:15
   minimum      = 5
