@@ -33,6 +33,7 @@ func Resource() *schema.Resource {
 				Required: true,
 				ForceNew: true,
 				ValidateFunc: validation.StringInSlice([]string{
+					"Manager::Worker::HireFire::JobLatency",
 					"Manager::Worker::HireFire::JobQueue",
 					"Manager::Web::Logplex::Load",
 					"Manager::Web::Logplex::ResponseTime",
@@ -67,6 +68,14 @@ func Resource() *schema.Resource {
 				ValidateFunc: validation.StringInSlice([]string{"average", "percentile"}, false),
 			},
 			"percentile": &schema.Schema{
+				Type:     schema.TypeInt,
+				Optional: true,
+			},
+			"minimum_latency": &schema.Schema{
+				Type:     schema.TypeInt,
+				Optional: true,
+			},
+			"maximum_latency": &schema.Schema{
 				Type:     schema.TypeInt,
 				Optional: true,
 			},
@@ -202,6 +211,8 @@ func setAttributes(d *schema.ResourceData, manager *client.Manager) {
 
 	d.Set("aggregation", manager.Aggregation)
 	d.Set("percentile", manager.Percentile)
+	d.Set("minimum_latency", manager.MinimumLatency)
+	d.Set("maximum_latency", manager.MaximumLatency)
 	d.Set("minimum_queue_time", manager.MinimumQueueTime)
 	d.Set("maximum_queue_time", manager.MaximumQueueTime)
 	d.Set("minimum_response_time", manager.MinimumResponseTime)
@@ -252,6 +263,16 @@ func getAttributes(d *schema.ResourceData) client.Manager {
 	if v, ok := d.GetOk("percentile"); ok {
 		value := v.(int)
 		manager.Percentile = &value
+	}
+
+	if v, ok := d.GetOk("minimum_latency"); ok {
+		value := v.(int)
+		manager.MinimumLatency = &value
+	}
+
+	if v, ok := d.GetOk("maximum_latency"); ok {
+		value := v.(int)
+		manager.MaximumLatency = &value
 	}
 
 	if v, ok := d.GetOk("minimum_queue_time"); ok {

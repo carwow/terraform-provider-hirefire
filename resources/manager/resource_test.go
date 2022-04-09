@@ -112,6 +112,28 @@ func TestAccManager(t *testing.T) {
 				Check: checks(*manager),
 			},
 			{
+				Config: func(orgName string, manager *client.Manager) string {
+					*manager = client.Manager{
+						Name:    fmt.Sprintf("test-%s", helper.RandString(10)),
+						Type:    "Manager::Worker::HireFire::JobLatency",
+						Enabled: true,
+						Minimum: 2,
+						Maximum: 10,
+
+						MinimumLatency:       ptr.Int(100),
+						MaximumLatency:       ptr.Int(150),
+						UpscaleQuantity:      ptr.Int(5),
+						DownscaleQuantity:    ptr.Int(1),
+						UpscaleSensitivity:   ptr.Int(2),
+						DownscaleSensitivity: ptr.Int(1),
+						UpscaleTimeout:       0,
+						DownscaleTimeout:     2,
+					}
+					return config(orgName, manager)
+				}(orgName, manager),
+				Check: checks(*manager),
+			},
+			{
 				ResourceName:      resourceName,
 				ImportState:       true,
 				ImportStateVerify: true,
@@ -238,6 +260,26 @@ func config(orgName string, manager *client.Manager) string {
 			manager.UpscaleLimit,
 			manager.DownscaleLimit,
 		))
+	case "Manager::Worker::HireFire::JobLatency":
+		return configBase(orgName, manager, fmt.Sprintf(`
+			minimum_latency       = %d
+			maximum_latency       = %d
+			upscale_quantity      = %d
+			downscale_quantity    = %d
+			upscale_sensitivity   = %d
+			downscale_sensitivity = %d
+			upscale_timeout       = %d
+			downscale_timeout     = %d
+			`,
+			*manager.MinimumLatency,
+			*manager.MaximumLatency,
+			*manager.UpscaleQuantity,
+			*manager.DownscaleQuantity,
+			*manager.UpscaleSensitivity,
+			*manager.DownscaleSensitivity,
+			manager.UpscaleTimeout,
+			manager.DownscaleTimeout,
+		))
 	default:
 		return configBase(orgName, manager, "")
 	}
@@ -260,6 +302,8 @@ func checkAttributes(manager client.Manager) resource.TestCheckFunc {
 
 		"aggregation":           helper.StringOrEmpty(manager.Aggregation),
 		"percentile":            helper.ItoaOrZero(manager.Percentile),
+		"minimum_latency":       helper.ItoaOrZero(manager.MinimumLatency),
+		"maximum_latency":       helper.ItoaOrZero(manager.MaximumLatency),
 		"minimum_queue_time":    helper.ItoaOrZero(manager.MinimumQueueTime),
 		"maximum_queue_time":    helper.ItoaOrZero(manager.MaximumQueueTime),
 		"minimum_response_time": helper.ItoaOrZero(manager.MinimumResponseTime),

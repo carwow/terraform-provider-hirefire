@@ -45,6 +45,7 @@ The following arguments are supported:
 - `type` - (required) The autoscaling strategy to use. Each strategy has a
   different set of additional fields documented below. Strategies:
   - [`Manager::Worker::HireFire::JobQueue`](#managerworkerhirefirejobqueue)
+  - [`Manager::Worker::HireFire::JobLatency`](#managerworkerhirefirejoblatency)
   - [`Manager::Web::Logplex::Load`](#managerweblogplexload)
   - [`Manager::Web::Logplex::ResponseTime`](#managerweblogplexresponsetime)
   - [`Manager::Web::Logplex::ConnectTime`](#managerweblogplexconnecttime)
@@ -68,10 +69,20 @@ The following arguments are supported:
 - `upscale_limit` - Limits the amount of dynos by which the manager scales up at a time. 0 means no limit.
 - `downscale_limit` - Limits the amount of dynos by which the manager scales down at a time. 0 means no limit.
 
+### Manager::Worker::HireFire::JobLatency
+- `minimum_latency` - Scales down if your application's job latency goes below this amount in seconds.
+- `maximum_latency` - Scales up if your application's job latency goes above this amount in seconds.
+- `upscale_quantity` - The amount of dynos to scale up at a time.
+- `downscale_quantity` - The amount of dynos to scale down at a time.
+- `upscale_sensitivity` - The amount of threshold breaches to wait before scaling up.
+- `downscale_sensitivity` - The amount of threshold breaches to wait before scaling down.
+- `upscale_timeout` - The amount of minutes to wait before performing upscale operations.
+- `downscale_timeout` - The amount of minutes to wait before performing downscale operations.
+
 ### Manager::Web::Logplex::Load
 - `last_minutes` - The load average over the last n minutes. Possible values are `1`, `5`, and `15`.
-- `minimum_load` - Scales up if your application's load exceeds this amount (`100` equals load 1).
-- `maximum_load` - Scales down if your application's load exceeds this amount (`100` equals load 1).
+- `minimum_load` - Scales down if your application's load goes below this amount (`100` equals load 1).
+- `maximum_load` - Scales up if your application's load goes above this amount (`100` equals load 1).
 - `upscale_quantity` - The amount of dynos to scale up at a time.
 - `downscale_quantity` - The amount of dynos to scale down at a time.
 - `upscale_sensitivity` - The amount of threshold breaches to wait before scaling up.

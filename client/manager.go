@@ -15,6 +15,8 @@ type Manager struct {
 
 	Aggregation          *string `json:"aggregation"`
 	Percentile           *int    `json:"percentile"`
+	MinimumLatency       *int    `json:"minimum_latency"`
+	MaximumLatency       *int    `json:"maximum_latency"`
 	MinimumQueueTime     *int    `json:"minimum_queue_time"`
 	MaximumQueueTime     *int    `json:"maximum_queue_time"`
 	MinimumResponseTime  *int    `json:"minimum_response_time"`

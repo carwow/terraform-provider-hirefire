@@ -59,6 +59,8 @@ func TestGetManagerEverything(t *testing.T) {
 
 				"aggregation":           "percentile",
 				"percentile":            99,
+				"minimum_latency":       100,
+				"maximum_latency":       150,
 				"minimum_queue_time":    200,
 				"maximum_queue_time":    400,
 				"minimum_response_time": 500,
@@ -109,6 +111,8 @@ func TestGetManagerEverything(t *testing.T) {
 
 		Aggregation:          ptr.String("percentile"),
 		Percentile:           ptr.Int(99),
+		MinimumLatency:       ptr.Int(100),
+		MaximumLatency:       ptr.Int(150),
 		MinimumQueueTime:     ptr.Int(200),
 		MaximumQueueTime:     ptr.Int(400),
 		MinimumResponseTime:  ptr.Int(500),
