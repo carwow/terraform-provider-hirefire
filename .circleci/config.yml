@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  go: circleci/go@1
+  go: cimg/go:1.18
 
 references:
   go_version: &go_version '1.18'
