@@ -27,9 +27,9 @@ The following arguments are supported:
 
 - `manager_id` - (required) The ID of the manager this time range belongs to.
 - `from_minute` - (required) The minute of the day that this time range should
-  start applying (min 0, max 1339).
+  start applying (min 0, max 1439).
 - `until_minute` - (required) The minute of the day that this time range should
-  start applying (min 0, max 1339).
+  start applying (min 0, max 1439).
 - `minimum` - (required) The minimum amount of dynos to run.
 - `maximum` - (required) The maximum amount of dynos to run.
 - `position` - (optional) The position of the time range (lower numbers take
