@@ -53,7 +53,9 @@ jobs:
       - go/mod-download-cached
       - run:
           name: go mod tidy
-          command: go mod tidy -v 2>&1 | [ $(wc -c) -eq 0 ]
+          command: |
+            go mod tidy -v
+            git diff --exit-code go.mod go.sum
       - go/test:
           failfast: true
           packages: '-v ./...'
