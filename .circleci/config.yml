@@ -4,7 +4,7 @@ orbs:
   go: circleci/go@1
 
 references:
-  go_version: &go_version '1.19'
+  go_version: &go_version '1.21'
 
 workflows:
   test:
@@ -56,9 +56,9 @@ jobs:
           command: |
             go mod tidy -v
             git diff --exit-code go.mod go.sum
-      - go/test:
-          failfast: true
-          packages: '-v ./...'
+      - run:
+          name: go test
+          command: go test -failfast -v ./...
 
   release:
     parameters:
