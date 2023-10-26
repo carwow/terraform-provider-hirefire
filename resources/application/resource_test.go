@@ -175,6 +175,7 @@ func checkExists(app client.Application) resource.TestCheckFunc {
 
 		app.Id = actualApp.Id
 		app.AccountId = actualApp.AccountId
+		app.Token = actualApp.Token
 		return helper.Equals(app, *actualApp)
 	}
 }
