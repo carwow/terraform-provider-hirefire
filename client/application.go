@@ -8,6 +8,7 @@ type Application struct {
 	Id                         string  `json:"id"`
 	AccountId                  string  `json:"account_id"`
 	Name                       string  `json:"name"`
+	Token                      string  `json:"token"`
 	CustomDomain               *string `json:"custom_domain"`
 	LogplexDrainToken          *string `json:"logplex_drain_token"`
 	Ssl                        bool    `json:"ssl"`

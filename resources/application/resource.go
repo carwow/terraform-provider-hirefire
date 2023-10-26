@@ -51,6 +51,11 @@ func Resource() *schema.Resource {
 				Type:     schema.TypeBool,
 				Optional: true,
 			},
+			"token": &schema.Schema{
+				Type:      schema.TypeString,
+				Computed:  true,
+				Sensitive: true,
+			},
 		},
 	}
 }
@@ -64,6 +69,7 @@ func setAttributes(d *schema.ResourceData, app *client.Application) {
 	d.Set("restart_crashed_dynos", app.RestartCrashedDynos)
 	d.Set("new_issue_notifications", app.NewIssueNotifications)
 	d.Set("resolved_issue_notifications", app.ResolvedIssueNotifications)
+	d.Set("token", app.Token)
 }
 
 func getAttributes(d *schema.ResourceData) client.Application {
@@ -101,6 +107,11 @@ func getAttributes(d *schema.ResourceData) client.Application {
 	if v, ok := d.GetOk("resolved_issue_notifications"); ok {
 		value := v.(bool)
 		app.ResolvedIssueNotifications = value
+	}
+
+	if v, ok := d.GetOk("token"); ok {
+		value := v.(string)
+		app.Token = value
 	}
 
 	return app
