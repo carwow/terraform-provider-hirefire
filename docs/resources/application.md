@@ -40,6 +40,7 @@ The following arguments are supported:
 The following attributes are exported:
 
 - `id` - The ID of the application assigned by HireFire.
+- `token` - The token of the application assigned by HireFire.
 
 ## Import
 
