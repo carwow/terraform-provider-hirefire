@@ -151,7 +151,6 @@ func checks(app client.Application) resource.TestCheckFunc {
 func checkAttributes(app client.Application) resource.TestCheckFunc {
 	return helper.CheckResourceAttributes(resourceName, map[string]string{
 		"name":                         app.Name,
-		"token":                        app.Token,
 		"custom_domain":                helper.StringOrEmpty(app.CustomDomain),
 		"logplex_drain_token":          helper.StringOrEmpty(app.LogplexDrainToken),
 		"ssl":                          strconv.FormatBool(app.Ssl),
