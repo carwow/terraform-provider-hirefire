@@ -1,11 +1,12 @@
 package client
 
 import (
-	"github.com/carwow/terraform-provider-hirefire/ptr"
-	"github.com/carwow/terraform-provider-hirefire/testing/assert"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/carwow/terraform-provider-hirefire/ptr"
+	"github.com/carwow/terraform-provider-hirefire/testing/assert"
 )
 
 func TestGetApplication(t *testing.T) {
@@ -56,7 +57,8 @@ func TestGetApplicationEverything(t *testing.T) {
 				"ssl":                          true,
 				"restart_crashed_dynos":        true,
 				"new_issue_notifications":      true,
-				"resolved_issue_notifications": true
+				"resolved_issue_notifications": true,
+				"checkup_frequency":            55
 			}
 		}`))
 	}))
@@ -79,6 +81,7 @@ func TestGetApplicationEverything(t *testing.T) {
 		RestartCrashedDynos:        true,
 		NewIssueNotifications:      true,
 		ResolvedIssueNotifications: true,
+		CheckupFrequency:           55,
 	}
 	assert.Equals(t, expected, application)
 }

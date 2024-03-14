@@ -15,6 +15,7 @@ type Application struct {
 	RestartCrashedDynos        bool    `json:"restart_crashed_dynos"`
 	NewIssueNotifications      bool    `json:"new_issue_notifications"`
 	ResolvedIssueNotifications bool    `json:"resolved_issue_notifications"`
+	CheckupFrequency           int     `json:"checkup_frequency"`
 }
 
 type wrappedApplication struct {
