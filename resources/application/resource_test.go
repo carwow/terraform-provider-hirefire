@@ -130,6 +130,7 @@ func configEverything(orgName string, app *client.Application) string {
 		restart_crashed_dynos = %t
 		new_issue_notifications = %t
 		resolved_issue_notifications = %t
+		checkup_frequency = %d
 		`,
 		app.Name,
 		*app.CustomDomain,
@@ -138,6 +139,7 @@ func configEverything(orgName string, app *client.Application) string {
 		app.RestartCrashedDynos,
 		app.NewIssueNotifications,
 		app.ResolvedIssueNotifications,
+		app.CheckupFrequency,
 	))
 }
 
@@ -157,6 +159,7 @@ func checkAttributes(app client.Application) resource.TestCheckFunc {
 		"restart_crashed_dynos":        strconv.FormatBool(app.RestartCrashedDynos),
 		"new_issue_notifications":      strconv.FormatBool(app.NewIssueNotifications),
 		"resolved_issue_notifications": strconv.FormatBool(app.ResolvedIssueNotifications),
+		"checkup_frequency":            strconv.Itoa(app.CheckupFrequency),
 	})
 }
 

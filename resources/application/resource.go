@@ -56,6 +56,10 @@ func Resource() *schema.Resource {
 				Computed:  true,
 				Sensitive: true,
 			},
+			"checkup_frequency": &schema.Schema{
+				Type:     schema.TypeInt,
+				Optional: true,
+			},
 		},
 	}
 }
@@ -70,6 +74,7 @@ func setAttributes(d *schema.ResourceData, app *client.Application) {
 	d.Set("new_issue_notifications", app.NewIssueNotifications)
 	d.Set("resolved_issue_notifications", app.ResolvedIssueNotifications)
 	d.Set("token", app.Token)
+	d.Set("checkup_frequency", app.CheckupFrequency)
 }
 
 func getAttributes(d *schema.ResourceData) client.Application {
@@ -112,6 +117,11 @@ func getAttributes(d *schema.ResourceData) client.Application {
 	if v, ok := d.GetOk("token"); ok {
 		value := v.(string)
 		app.Token = value
+	}
+
+	if v, ok := d.GetOk("checkup_frequency"); ok {
+		value := v.(int)
+		app.CheckupFrequency = value
 	}
 
 	return app
