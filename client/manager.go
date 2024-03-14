@@ -46,6 +46,7 @@ type Manager struct {
 	Notify               bool    `json:"notify"`
 	NotifyQuantity       int     `json:"notify_quantity"`
 	NotifyAfter          int     `json:"notify_after"`
+	UpscaleOnInitialJob  *bool   `json:"upscale_on_initial_job"`
 }
 
 type wrappedManager struct {

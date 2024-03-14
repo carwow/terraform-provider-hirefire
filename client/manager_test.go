@@ -1,11 +1,12 @@
 package client
 
 import (
-	"github.com/carwow/terraform-provider-hirefire/ptr"
-	"github.com/carwow/terraform-provider-hirefire/testing/assert"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/carwow/terraform-provider-hirefire/ptr"
+	"github.com/carwow/terraform-provider-hirefire/testing/assert"
 )
 
 func TestGetManager(t *testing.T) {
@@ -57,38 +58,39 @@ func TestGetManagerEverything(t *testing.T) {
 				"minimum":        2,
 				"maximum":        5,
 
-				"aggregation":           "percentile",
-				"percentile":            99,
-				"minimum_latency":       100,
-				"maximum_latency":       150,
-				"minimum_queue_time":    200,
-				"maximum_queue_time":    400,
-				"minimum_response_time": 500,
-				"maximum_response_time": 1000,
-				"minimum_connect_time":  300,
-				"maximum_connect_time":  600,
-				"minimum_load":          1,
-				"maximum_load":          2,
-				"minimum_apdex":         95,
-				"maximum_apdex":         99,
-				"ratio":                 10,
-				"decrementable":         true,
-				"url":                   "https://www.example.com",
-				"upscale_quantity":      5,
-				"downscale_quantity":    1,
-				"upscale_sensitivity":   1,
-				"downscale_sensitivity": 2,
-				"upscale_timeout":       1,
-				"downscale_timeout":     2,
-				"upscale_limit":         0,
-				"downscale_limit":       2,
-				"scale_up_on_503":       true,
-				"new_relic_api_key":     "newrelic-api-key",
-				"new_relic_account_id":  "newrelic-account-id",
-				"new_relic_app_id":      "newrelic-app-id",
-				"notify":                true,
-				"notify_quantity":       5,
-				"notify_after":          10
+				"aggregation":            "percentile",
+				"percentile":             99,
+				"minimum_latency":        100,
+				"maximum_latency":        150,
+				"minimum_queue_time":     200,
+				"maximum_queue_time":     400,
+				"minimum_response_time":  500,
+				"maximum_response_time":  1000,
+				"minimum_connect_time":   300,
+				"maximum_connect_time":   600,
+				"minimum_load":           1,
+				"maximum_load":           2,
+				"minimum_apdex":          95,
+				"maximum_apdex":          99,
+				"ratio":                  10,
+				"decrementable":          true,
+				"url":                    "https://www.example.com",
+				"upscale_quantity":       5,
+				"downscale_quantity":     1,
+				"upscale_sensitivity":    1,
+				"downscale_sensitivity":  2,
+				"upscale_timeout":        1,
+				"downscale_timeout":      2,
+				"upscale_limit":          0,
+				"downscale_limit":        2,
+				"scale_up_on_503":        true,
+				"new_relic_api_key":      "newrelic-api-key",
+				"new_relic_account_id":   "newrelic-account-id",
+				"new_relic_app_id":       "newrelic-app-id",
+				"notify":                 true,
+				"notify_quantity":        5,
+				"notify_after":           10,
+				"upscale_on_initial_job": true
 			}
 		}`))
 	}))
@@ -141,6 +143,7 @@ func TestGetManagerEverything(t *testing.T) {
 		Notify:               true,
 		NotifyQuantity:       5,
 		NotifyAfter:          10,
+		UpscaleOnInitialJob:  ptr.Bool(true),
 	}
 	assert.Equals(t, expected, manager)
 }
