@@ -15,16 +15,17 @@ resource "hirefire_manager" "my_manager" {
   minimum = 2
   maximum = 10
 
-  aggregation           = "percentile"
-  percentile            = 99
-  minimum_queue_time    = 100
-  maximum_queue_time    = 250
-  downscale_quantity    = 1
-  upscale_quantity      = 5
-  downscale_sensitivity = 2
-  upscale_sensitivity   = 1
-  downscale_timeout     = 1
-  upscale_timeout       = 1
+  aggregation            = "percentile"
+  percentile             = 99
+  minimum_queue_time     = 100
+  maximum_queue_time     = 250
+  downscale_quantity     = 1
+  upscale_quantity       = 5
+  downscale_sensitivity  = 2
+  upscale_sensitivity    = 1
+  downscale_timeout      = 1
+  upscale_timeout        = 1
+  upscale_on_initial_job = true
 }
 ```
 
@@ -78,6 +79,7 @@ The following arguments are supported:
 - `downscale_sensitivity` - The amount of threshold breaches to wait before scaling down.
 - `upscale_timeout` - The amount of minutes to wait before performing upscale operations.
 - `downscale_timeout` - The amount of minutes to wait before performing downscale operations.
+- `upscale_on_initial_job` - Ensures the availability of at least one Dyno when one or more jobs are enqueued, bypassing the initial maximum latency requirement. Default is `true`.
 
 ### Manager::Web::Logplex::Load
 - `last_minutes` - The load average over the last n minutes. Possible values are `1`, `5`, and `15`.

@@ -197,6 +197,10 @@ func Resource() *schema.Resource {
 				Type:     schema.TypeInt,
 				Optional: true,
 			},
+			"upscale_on_initial_job": &schema.Schema{
+				Type:     schema.TypeBool,
+				Optional: true,
+			},
 		},
 	}
 }
@@ -242,6 +246,7 @@ func setAttributes(d *schema.ResourceData, manager *client.Manager) {
 	d.Set("notify", manager.Notify)
 	d.Set("notify_quantity", manager.NotifyQuantity)
 	d.Set("notify_after", manager.NotifyAfter)
+	d.Set("upscale_on_initial_job", manager.UpscaleOnInitialJob)
 }
 
 func getAttributes(d *schema.ResourceData) client.Manager {
@@ -418,6 +423,11 @@ func getAttributes(d *schema.ResourceData) client.Manager {
 	if v, ok := d.GetOk("notify_after"); ok {
 		value := v.(int)
 		manager.NotifyAfter = value
+	}
+
+	if v, ok := d.GetOk("upscale_on_initial_job"); ok {
+		value := v.(bool)
+		manager.UpscaleOnInitialJob = &value
 	}
 
 	return manager

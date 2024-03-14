@@ -128,6 +128,7 @@ func TestAccManager(t *testing.T) {
 						DownscaleSensitivity: ptr.Int(1),
 						UpscaleTimeout:       0,
 						DownscaleTimeout:     2,
+						UpscaleOnInitialJob:  ptr.Bool(true),
 					}
 					return config(orgName, manager)
 				}(orgName, manager),
@@ -262,14 +263,15 @@ func config(orgName string, manager *client.Manager) string {
 		))
 	case "Manager::Worker::HireFire::JobLatency":
 		return configBase(orgName, manager, fmt.Sprintf(`
-			minimum_latency       = %d
-			maximum_latency       = %d
-			upscale_quantity      = %d
-			downscale_quantity    = %d
-			upscale_sensitivity   = %d
-			downscale_sensitivity = %d
-			upscale_timeout       = %d
-			downscale_timeout     = %d
+			minimum_latency        = %d
+			maximum_latency        = %d
+			upscale_quantity       = %d
+			downscale_quantity     = %d
+			upscale_sensitivity    = %d
+			downscale_sensitivity  = %d
+			upscale_timeout        = %d
+			downscale_timeout      = %d
+			upscale_on_initial_job = %d
 			`,
 			*manager.MinimumLatency,
 			*manager.MaximumLatency,
@@ -279,6 +281,7 @@ func config(orgName string, manager *client.Manager) string {
 			*manager.DownscaleSensitivity,
 			manager.UpscaleTimeout,
 			manager.DownscaleTimeout,
+			manager.UpscaleOnInitialJob,
 		))
 	default:
 		return configBase(orgName, manager, "")
@@ -300,39 +303,40 @@ func checkAttributes(manager client.Manager) resource.TestCheckFunc {
 		"minimum": strconv.Itoa(manager.Minimum),
 		"maximum": strconv.Itoa(manager.Maximum),
 
-		"aggregation":           helper.StringOrEmpty(manager.Aggregation),
-		"percentile":            helper.ItoaOrZero(manager.Percentile),
-		"minimum_latency":       helper.ItoaOrZero(manager.MinimumLatency),
-		"maximum_latency":       helper.ItoaOrZero(manager.MaximumLatency),
-		"minimum_queue_time":    helper.ItoaOrZero(manager.MinimumQueueTime),
-		"maximum_queue_time":    helper.ItoaOrZero(manager.MaximumQueueTime),
-		"minimum_response_time": helper.ItoaOrZero(manager.MinimumResponseTime),
-		"maximum_response_time": helper.ItoaOrZero(manager.MaximumResponseTime),
-		"minimum_connect_time":  helper.ItoaOrZero(manager.MinimumConnectTime),
-		"maximum_connect_time":  helper.ItoaOrZero(manager.MaximumConnectTime),
-		"minimum_load":          helper.ItoaOrZero(manager.MinimumLoad),
-		"maximum_load":          helper.ItoaOrZero(manager.MaximumLoad),
-		"minimum_apdex":         helper.ItoaOrZero(manager.MinimumApdex),
-		"maximum_apdex":         helper.ItoaOrZero(manager.MaximumApdex),
-		"last_minutes":          helper.ItoaOrZero(manager.LastMinutes),
-		"ratio":                 helper.ItoaOrZero(manager.Ratio),
-		"decrementable":         helper.BoolOrFalse(manager.Decrementable),
-		"url":                   helper.StringOrEmpty(manager.Url),
-		"upscale_quantity":      helper.ItoaOrZero(manager.UpscaleQuantity),
-		"downscale_quantity":    helper.ItoaOrZero(manager.DownscaleQuantity),
-		"upscale_sensitivity":   helper.ItoaOrZero(manager.UpscaleSensitivity),
-		"downscale_sensitivity": helper.ItoaOrZero(manager.DownscaleSensitivity),
-		"upscale_timeout":       strconv.Itoa(manager.UpscaleTimeout),
-		"downscale_timeout":     strconv.Itoa(manager.DownscaleTimeout),
-		"upscale_limit":         strconv.Itoa(manager.UpscaleLimit),
-		"downscale_limit":       strconv.Itoa(manager.DownscaleLimit),
-		"scale_up_on_503":       helper.BoolOrFalse(manager.ScaleUpOn503),
-		"new_relic_api_key":     helper.StringOrEmpty(manager.NewRelicApiKey),
-		"new_relic_account_id":  helper.StringOrEmpty(manager.NewRelicAccountId),
-		"new_relic_app_id":      helper.StringOrEmpty(manager.NewRelicAppId),
-		"notify":                strconv.FormatBool(manager.Notify),
-		"notify_quantity":       strconv.Itoa(manager.NotifyQuantity),
-		"notify_after":          strconv.Itoa(manager.NotifyAfter),
+		"aggregation":            helper.StringOrEmpty(manager.Aggregation),
+		"percentile":             helper.ItoaOrZero(manager.Percentile),
+		"minimum_latency":        helper.ItoaOrZero(manager.MinimumLatency),
+		"maximum_latency":        helper.ItoaOrZero(manager.MaximumLatency),
+		"minimum_queue_time":     helper.ItoaOrZero(manager.MinimumQueueTime),
+		"maximum_queue_time":     helper.ItoaOrZero(manager.MaximumQueueTime),
+		"minimum_response_time":  helper.ItoaOrZero(manager.MinimumResponseTime),
+		"maximum_response_time":  helper.ItoaOrZero(manager.MaximumResponseTime),
+		"minimum_connect_time":   helper.ItoaOrZero(manager.MinimumConnectTime),
+		"maximum_connect_time":   helper.ItoaOrZero(manager.MaximumConnectTime),
+		"minimum_load":           helper.ItoaOrZero(manager.MinimumLoad),
+		"maximum_load":           helper.ItoaOrZero(manager.MaximumLoad),
+		"minimum_apdex":          helper.ItoaOrZero(manager.MinimumApdex),
+		"maximum_apdex":          helper.ItoaOrZero(manager.MaximumApdex),
+		"last_minutes":           helper.ItoaOrZero(manager.LastMinutes),
+		"ratio":                  helper.ItoaOrZero(manager.Ratio),
+		"decrementable":          helper.BoolOrFalse(manager.Decrementable),
+		"url":                    helper.StringOrEmpty(manager.Url),
+		"upscale_quantity":       helper.ItoaOrZero(manager.UpscaleQuantity),
+		"downscale_quantity":     helper.ItoaOrZero(manager.DownscaleQuantity),
+		"upscale_sensitivity":    helper.ItoaOrZero(manager.UpscaleSensitivity),
+		"downscale_sensitivity":  helper.ItoaOrZero(manager.DownscaleSensitivity),
+		"upscale_timeout":        strconv.Itoa(manager.UpscaleTimeout),
+		"downscale_timeout":      strconv.Itoa(manager.DownscaleTimeout),
+		"upscale_limit":          strconv.Itoa(manager.UpscaleLimit),
+		"downscale_limit":        strconv.Itoa(manager.DownscaleLimit),
+		"scale_up_on_503":        helper.BoolOrFalse(manager.ScaleUpOn503),
+		"new_relic_api_key":      helper.StringOrEmpty(manager.NewRelicApiKey),
+		"new_relic_account_id":   helper.StringOrEmpty(manager.NewRelicAccountId),
+		"new_relic_app_id":       helper.StringOrEmpty(manager.NewRelicAppId),
+		"notify":                 strconv.FormatBool(manager.Notify),
+		"notify_quantity":        strconv.Itoa(manager.NotifyQuantity),
+		"notify_after":           strconv.Itoa(manager.NotifyAfter),
+		"upscale_on_initial_job": helper.BoolOrFalse(manager.UpscaleOnInitialJob),
 	})
 }
 
