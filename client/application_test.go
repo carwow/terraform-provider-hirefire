@@ -32,6 +32,7 @@ func TestGetApplication(t *testing.T) {
 		Id:                         "ID-123",
 		AccountId:                  "ID-999",
 		Name:                       "app-name",
+		CheckupFrequency:           0,
 		CustomDomain:               nil,
 		LogplexDrainToken:          nil,
 		Ssl:                        false,
@@ -52,13 +53,13 @@ func TestGetApplicationEverything(t *testing.T) {
 				"account_id":                   "ID-999",
 				"name":                         "app-name",
 				"token":                        "hirefire-token",
+				"checkup_frequency":            55,
 				"custom_domain":                "custom-domain",
 				"logplex_drain_token":          "drain-token",
 				"ssl":                          true,
 				"restart_crashed_dynos":        true,
 				"new_issue_notifications":      true,
-				"resolved_issue_notifications": true,
-				"checkup_frequency":            55
+				"resolved_issue_notifications": true
 			}
 		}`))
 	}))
@@ -75,13 +76,13 @@ func TestGetApplicationEverything(t *testing.T) {
 		AccountId:                  "ID-999",
 		Name:                       "app-name",
 		Token:                      "hirefire-token",
+		CheckupFrequency:           55,
 		CustomDomain:               ptr.String("custom-domain"),
 		LogplexDrainToken:          ptr.String("drain-token"),
 		Ssl:                        true,
 		RestartCrashedDynos:        true,
 		NewIssueNotifications:      true,
 		ResolvedIssueNotifications: true,
-		CheckupFrequency:           55,
 	}
 	assert.Equals(t, expected, application)
 }

@@ -9,13 +9,13 @@ type Application struct {
 	AccountId                  string  `json:"account_id"`
 	Name                       string  `json:"name"`
 	Token                      string  `json:"token"`
+	CheckupFrequency           int     `json:"checkup_frequency"`
 	CustomDomain               *string `json:"custom_domain"`
 	LogplexDrainToken          *string `json:"logplex_drain_token"`
 	Ssl                        bool    `json:"ssl"`
 	RestartCrashedDynos        bool    `json:"restart_crashed_dynos"`
 	NewIssueNotifications      bool    `json:"new_issue_notifications"`
 	ResolvedIssueNotifications bool    `json:"resolved_issue_notifications"`
-	CheckupFrequency           int     `json:"checkup_frequency"`
 }
 
 type wrappedApplication struct {

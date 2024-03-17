@@ -4,6 +4,7 @@ import (
 	"github.com/carwow/terraform-provider-hirefire/client"
 	"github.com/carwow/terraform-provider-hirefire/config"
 	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/helper/validation"
 )
 
 func Resource() *schema.Resource {
@@ -26,6 +27,12 @@ func Resource() *schema.Resource {
 			"name": &schema.Schema{
 				Type:     schema.TypeString,
 				Required: true,
+			},
+			"checkup_frequency": &schema.Schema{
+				Type:         schema.TypeInt,
+				Optional:     true,
+				ValidateFunc: validation.IntBetween(15, 60),
+				Default:      60,
 			},
 			"custom_domain": &schema.Schema{
 				Type:     schema.TypeString,
@@ -56,10 +63,6 @@ func Resource() *schema.Resource {
 				Computed:  true,
 				Sensitive: true,
 			},
-			"checkup_frequency": &schema.Schema{
-				Type:     schema.TypeInt,
-				Optional: true,
-			},
 		},
 	}
 }
@@ -67,6 +70,8 @@ func Resource() *schema.Resource {
 func setAttributes(d *schema.ResourceData, app *client.Application) {
 	d.Set("account_id", app.AccountId)
 	d.Set("name", app.Name)
+
+	d.Set("checkup_frequency", app.CheckupFrequency)
 	d.Set("custom_domain", app.CustomDomain)
 	d.Set("logplex_drain_token", app.LogplexDrainToken)
 	d.Set("ssl", app.Ssl)
@@ -74,7 +79,6 @@ func setAttributes(d *schema.ResourceData, app *client.Application) {
 	d.Set("new_issue_notifications", app.NewIssueNotifications)
 	d.Set("resolved_issue_notifications", app.ResolvedIssueNotifications)
 	d.Set("token", app.Token)
-	d.Set("checkup_frequency", app.CheckupFrequency)
 }
 
 func getAttributes(d *schema.ResourceData) client.Application {
@@ -82,6 +86,11 @@ func getAttributes(d *schema.ResourceData) client.Application {
 		Id:        d.Id(),
 		AccountId: d.Get("account_id").(string),
 		Name:      d.Get("name").(string),
+	}
+
+	if v, ok := d.GetOk("checkup_frequency"); ok {
+		value := v.(int)
+		app.CheckupFrequency = value
 	}
 
 	if v, ok := d.GetOk("custom_domain"); ok {
@@ -117,11 +126,6 @@ func getAttributes(d *schema.ResourceData) client.Application {
 	if v, ok := d.GetOk("token"); ok {
 		value := v.(string)
 		app.Token = value
-	}
-
-	if v, ok := d.GetOk("checkup_frequency"); ok {
-		value := v.(int)
-		app.CheckupFrequency = value
 	}
 
 	return app

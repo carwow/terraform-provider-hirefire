@@ -26,7 +26,8 @@ func TestAccApplication(t *testing.T) {
 			{
 				Config: func(orgName string, app *client.Application) string {
 					*app = client.Application{
-						Name: fmt.Sprintf("test-%s", helper.RandString(10)),
+						Name:             fmt.Sprintf("test-%s", helper.RandString(10)),
+						CheckupFrequency: 60,
 					}
 					return config(orgName, app)
 				}(orgName, app),
@@ -35,7 +36,8 @@ func TestAccApplication(t *testing.T) {
 			{
 				Config: func(orgName string, app *client.Application) string {
 					*app = client.Application{
-						Name: fmt.Sprintf("test-%s", helper.RandString(10)),
+						Name:             fmt.Sprintf("test-%s", helper.RandString(10)),
+						CheckupFrequency: 60,
 					}
 					return config(orgName, app)
 				}(orgName, app),
@@ -65,6 +67,7 @@ func TestAccApplicationEverything(t *testing.T) {
 				Config: func(orgName string, app *client.Application) string {
 					*app = client.Application{
 						Name:                       fmt.Sprintf("test-%s", helper.RandString(10)),
+						CheckupFrequency:           helper.RandInt(15, 60),
 						CustomDomain:               ptr.String(fmt.Sprintf("test-%s", helper.RandString(10))),
 						LogplexDrainToken:          ptr.String(logplexDrainToken),
 						Ssl:                        helper.RandBool(),
@@ -80,6 +83,7 @@ func TestAccApplicationEverything(t *testing.T) {
 				Config: func(orgName string, app *client.Application) string {
 					*app = client.Application{
 						Name:                       fmt.Sprintf("test-%s", helper.RandString(10)),
+						CheckupFrequency:           helper.RandInt(15, 60),
 						CustomDomain:               ptr.String(fmt.Sprintf("test-%s", helper.RandString(10))),
 						LogplexDrainToken:          ptr.String(logplexDrainToken),
 						Ssl:                        helper.RandBool(),
@@ -124,22 +128,22 @@ func config(orgName string, app *client.Application) string {
 func configEverything(orgName string, app *client.Application) string {
 	return configBase(orgName, fmt.Sprintf(`
 		name = "%s"
+		checkup_frequency = %d
 		custom_domain = "%s"
 		logplex_drain_token = "%s"
 		ssl = %t
 		restart_crashed_dynos = %t
 		new_issue_notifications = %t
 		resolved_issue_notifications = %t
-		checkup_frequency = %d
 		`,
 		app.Name,
+		app.CheckupFrequency,
 		*app.CustomDomain,
 		*app.LogplexDrainToken,
 		app.Ssl,
 		app.RestartCrashedDynos,
 		app.NewIssueNotifications,
 		app.ResolvedIssueNotifications,
-		app.CheckupFrequency,
 	))
 }
 
@@ -153,13 +157,13 @@ func checks(app client.Application) resource.TestCheckFunc {
 func checkAttributes(app client.Application) resource.TestCheckFunc {
 	return helper.CheckResourceAttributes(resourceName, map[string]string{
 		"name":                         app.Name,
+		"checkup_frequency":            strconv.Itoa(app.CheckupFrequency),
 		"custom_domain":                helper.StringOrEmpty(app.CustomDomain),
 		"logplex_drain_token":          helper.StringOrEmpty(app.LogplexDrainToken),
 		"ssl":                          strconv.FormatBool(app.Ssl),
 		"restart_crashed_dynos":        strconv.FormatBool(app.RestartCrashedDynos),
 		"new_issue_notifications":      strconv.FormatBool(app.NewIssueNotifications),
 		"resolved_issue_notifications": strconv.FormatBool(app.ResolvedIssueNotifications),
-		"checkup_frequency":            strconv.Itoa(app.CheckupFrequency),
 	})
 }
 
