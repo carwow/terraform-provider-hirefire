@@ -26,7 +26,7 @@ func TestAccManager(t *testing.T) {
 			{
 				Config: func(orgName string, manager *client.Manager) string {
 					*manager = client.Manager{
-						Name:    fmt.Sprintf("test-%s", helper.RandString(10)),
+						Name:    "web",
 						Type:    "Manager::Web::Logplex::RPM",
 						Enabled: false,
 						Minimum: 1,
@@ -45,7 +45,7 @@ func TestAccManager(t *testing.T) {
 			{
 				Config: func(orgName string, manager *client.Manager) string {
 					*manager = client.Manager{
-						Name:    fmt.Sprintf("test-%s", helper.RandString(10)),
+						Name:    "web",
 						Type:    "Manager::Web::Logplex::QueueTime",
 						Enabled: true,
 						Minimum: 2,
