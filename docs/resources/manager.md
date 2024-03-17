@@ -25,7 +25,6 @@ resource "hirefire_manager" "my_manager" {
   upscale_sensitivity    = 1
   downscale_timeout      = 1
   upscale_timeout        = 1
-  upscale_on_initial_job = true
 }
 ```
 

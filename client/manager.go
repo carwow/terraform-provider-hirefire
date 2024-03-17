@@ -39,6 +39,7 @@ type Manager struct {
 	DownscaleTimeout     int     `json:"downscale_timeout"`
 	UpscaleLimit         int     `json:"upscale_limit"`
 	DownscaleLimit       int     `json:"downscale_limit"`
+	UpscaleOnInitialJob  *bool   `json:"upscale_on_initial_job"`
 	ScaleUpOn503         *bool   `json:"scale_up_on_503"`
 	NewRelicApiKey       *string `json:"new_relic_api_key"`
 	NewRelicAccountId    *string `json:"new_relic_account_id"`
@@ -46,7 +47,6 @@ type Manager struct {
 	Notify               bool    `json:"notify"`
 	NotifyQuantity       int     `json:"notify_quantity"`
 	NotifyAfter          int     `json:"notify_after"`
-	UpscaleOnInitialJob  *bool   `json:"upscale_on_initial_job"`
 }
 
 type wrappedManager struct {

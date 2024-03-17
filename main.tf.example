@@ -31,6 +31,7 @@ resource "hirefire_manager" "foobar" {
   minimum        = 1
   maximum        = 10
 
+  decrementable         = true
   ratio                 = 5
   upscale_sensitivity   = 1
   downscale_sensitivity = 2

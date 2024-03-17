@@ -83,14 +83,14 @@ func TestGetManagerEverything(t *testing.T) {
 				"downscale_timeout":      2,
 				"upscale_limit":          0,
 				"downscale_limit":        2,
+				"upscale_on_initial_job": true,
 				"scale_up_on_503":        true,
 				"new_relic_api_key":      "newrelic-api-key",
 				"new_relic_account_id":   "newrelic-account-id",
 				"new_relic_app_id":       "newrelic-app-id",
 				"notify":                 true,
 				"notify_quantity":        5,
-				"notify_after":           10,
-				"upscale_on_initial_job": true
+				"notify_after":           10
 			}
 		}`))
 	}))
@@ -136,6 +136,7 @@ func TestGetManagerEverything(t *testing.T) {
 		DownscaleTimeout:     2,
 		UpscaleLimit:         0,
 		DownscaleLimit:       2,
+		UpscaleOnInitialJob:  ptr.Bool(true),
 		ScaleUpOn503:         ptr.Bool(true),
 		NewRelicApiKey:       ptr.String("newrelic-api-key"),
 		NewRelicAccountId:    ptr.String("newrelic-account-id"),
@@ -143,7 +144,6 @@ func TestGetManagerEverything(t *testing.T) {
 		Notify:               true,
 		NotifyQuantity:       5,
 		NotifyAfter:          10,
-		UpscaleOnInitialJob:  ptr.Bool(true),
 	}
 	assert.Equals(t, expected, manager)
 }

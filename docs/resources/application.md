@@ -24,6 +24,8 @@ The following arguments are supported:
 
 - `account_id` - (required) The ID of the account this application belongs to.
 - `name` - (required) The name of the application as registered with Heroku.
+- `checkup_frequency` - (optional) The frequency (in seconds) at which autoscaling
+   operations are performed. Default is `60`.
 - `custom_domain` - (optional) The custom domain of the Heroku application, if
   any is being used.
 - `logplex_drain_token` - (optional) The Heroku drain token, if using Logplex
@@ -35,8 +37,6 @@ The following arguments are supported:
   `false`.
 - `resolved_issue_notifications` - (optional) Notify about resolved issues.
   Default is `false`.
-- `checkup_frequency` - (optional) The frequency (in seconds) at which autoscaling
-   operations are performed. Default is `60`.
 
 ## Attribute Reference
 

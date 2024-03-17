@@ -168,6 +168,10 @@ func Resource() *schema.Resource {
 				Type:     schema.TypeInt,
 				Optional: true,
 			},
+			"upscale_on_initial_job": &schema.Schema{
+				Type:     schema.TypeBool,
+				Optional: true,
+			},
 			"scale_up_on_503": &schema.Schema{
 				Type:     schema.TypeBool,
 				Optional: true,
@@ -195,10 +199,6 @@ func Resource() *schema.Resource {
 			},
 			"notify_after": &schema.Schema{
 				Type:     schema.TypeInt,
-				Optional: true,
-			},
-			"upscale_on_initial_job": &schema.Schema{
-				Type:     schema.TypeBool,
 				Optional: true,
 			},
 		},
@@ -239,6 +239,7 @@ func setAttributes(d *schema.ResourceData, manager *client.Manager) {
 	d.Set("downscale_timeout", manager.DownscaleTimeout)
 	d.Set("upscale_limit", manager.UpscaleLimit)
 	d.Set("downscale_limit", manager.DownscaleLimit)
+	d.Set("upscale_on_initial_job", manager.UpscaleOnInitialJob)
 	d.Set("scale_up_on_503", manager.ScaleUpOn503)
 	d.Set("new_relic_api_key", manager.NewRelicApiKey)
 	d.Set("new_relic_account_id", manager.NewRelicAccountId)
@@ -246,7 +247,6 @@ func setAttributes(d *schema.ResourceData, manager *client.Manager) {
 	d.Set("notify", manager.Notify)
 	d.Set("notify_quantity", manager.NotifyQuantity)
 	d.Set("notify_after", manager.NotifyAfter)
-	d.Set("upscale_on_initial_job", manager.UpscaleOnInitialJob)
 }
 
 func getAttributes(d *schema.ResourceData) client.Manager {
@@ -340,7 +340,7 @@ func getAttributes(d *schema.ResourceData) client.Manager {
 		manager.Ratio = &value
 	}
 
-	if v, ok := d.GetOk("decrementable"); ok {
+	if v, ok := d.GetOkExists("decrementable"); ok {
 		value := v.(bool)
 		manager.Decrementable = &value
 	}
@@ -390,6 +390,11 @@ func getAttributes(d *schema.ResourceData) client.Manager {
 		manager.DownscaleLimit = value
 	}
 
+	if v, ok := d.GetOkExists("upscale_on_initial_job"); ok {
+		value := v.(bool)
+		manager.UpscaleOnInitialJob = &value
+	}
+
 	if v, ok := d.GetOk("scale_up_on_503"); ok {
 		value := v.(bool)
 		manager.ScaleUpOn503 = &value
@@ -423,11 +428,6 @@ func getAttributes(d *schema.ResourceData) client.Manager {
 	if v, ok := d.GetOk("notify_after"); ok {
 		value := v.(int)
 		manager.NotifyAfter = value
-	}
-
-	if v, ok := d.GetOk("upscale_on_initial_job"); ok {
-		value := v.(bool)
-		manager.UpscaleOnInitialJob = &value
 	}
 
 	return manager

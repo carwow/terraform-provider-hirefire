@@ -271,7 +271,7 @@ func config(orgName string, manager *client.Manager) string {
 			downscale_sensitivity  = %d
 			upscale_timeout        = %d
 			downscale_timeout      = %d
-			upscale_on_initial_job = %d
+			upscale_on_initial_job = %t
 			`,
 			*manager.MinimumLatency,
 			*manager.MaximumLatency,
@@ -281,7 +281,7 @@ func config(orgName string, manager *client.Manager) string {
 			*manager.DownscaleSensitivity,
 			manager.UpscaleTimeout,
 			manager.DownscaleTimeout,
-			manager.UpscaleOnInitialJob,
+			*manager.UpscaleOnInitialJob,
 		))
 	default:
 		return configBase(orgName, manager, "")
@@ -329,6 +329,7 @@ func checkAttributes(manager client.Manager) resource.TestCheckFunc {
 		"downscale_timeout":      strconv.Itoa(manager.DownscaleTimeout),
 		"upscale_limit":          strconv.Itoa(manager.UpscaleLimit),
 		"downscale_limit":        strconv.Itoa(manager.DownscaleLimit),
+		"upscale_on_initial_job": helper.BoolOrFalse(manager.UpscaleOnInitialJob),
 		"scale_up_on_503":        helper.BoolOrFalse(manager.ScaleUpOn503),
 		"new_relic_api_key":      helper.StringOrEmpty(manager.NewRelicApiKey),
 		"new_relic_account_id":   helper.StringOrEmpty(manager.NewRelicAccountId),
@@ -336,7 +337,6 @@ func checkAttributes(manager client.Manager) resource.TestCheckFunc {
 		"notify":                 strconv.FormatBool(manager.Notify),
 		"notify_quantity":        strconv.Itoa(manager.NotifyQuantity),
 		"notify_after":           strconv.Itoa(manager.NotifyAfter),
-		"upscale_on_initial_job": helper.BoolOrFalse(manager.UpscaleOnInitialJob),
 	})
 }
 
