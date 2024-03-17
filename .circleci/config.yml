@@ -4,7 +4,7 @@ orbs:
   go: circleci/go@1
 
 references:
-  go_version: &go_version '1.21'
+  go_version: &go_version '1.22'
 
 workflows:
   test:
