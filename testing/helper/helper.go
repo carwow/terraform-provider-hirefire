@@ -95,5 +95,5 @@ func RandBool() bool {
 }
 
 func RandInt(from, to int) int {
-	return from + rand.Intn(to+1)
+	return from + rand.Intn((to-from)+1)
 }
