@@ -1,10 +1,11 @@
 package client
 
 import (
-	"github.com/carwow/terraform-provider-hirefire/testing/assert"
 	"net/http"
 	"net/http/httptest"
 	"testing"
+
+	"github.com/carwow/terraform-provider-hirefire/testing/assert"
 )
 
 func TestGetRecipient(t *testing.T) {
