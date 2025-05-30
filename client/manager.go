@@ -44,6 +44,7 @@ type Manager struct {
 	NewRelicApiKey       *string `json:"new_relic_api_key"`
 	NewRelicAccountId    *string `json:"new_relic_account_id"`
 	NewRelicAppId        *string `json:"new_relic_app_id"`
+	NewRelicRegion       *string `json:"new_relic_region"`
 	Notify               bool    `json:"notify"`
 	NotifyQuantity       int     `json:"notify_quantity"`
 	NotifyAfter          int     `json:"notify_after"`

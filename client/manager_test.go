@@ -88,6 +88,7 @@ func TestGetManagerEverything(t *testing.T) {
 				"new_relic_api_key":      "newrelic-api-key",
 				"new_relic_account_id":   "newrelic-account-id",
 				"new_relic_app_id":       "newrelic-app-id",
+				"new_relic_region":       "newrelic-region",
 				"notify":                 true,
 				"notify_quantity":        5,
 				"notify_after":           10
@@ -141,6 +142,7 @@ func TestGetManagerEverything(t *testing.T) {
 		NewRelicApiKey:       ptr.String("newrelic-api-key"),
 		NewRelicAccountId:    ptr.String("newrelic-account-id"),
 		NewRelicAppId:        ptr.String("newrelic-app-id"),
+		NewRelicRegion:       ptr.String("newrelic-region"),
 		Notify:               true,
 		NotifyQuantity:       5,
 		NotifyAfter:          10,

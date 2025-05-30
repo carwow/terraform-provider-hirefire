@@ -334,6 +334,7 @@ func checkAttributes(manager client.Manager) resource.TestCheckFunc {
 		"new_relic_api_key":      helper.StringOrEmpty(manager.NewRelicApiKey),
 		"new_relic_account_id":   helper.StringOrEmpty(manager.NewRelicAccountId),
 		"new_relic_app_id":       helper.StringOrEmpty(manager.NewRelicAppId),
+		"new_relic_region":       helper.StringOrEmpty(manager.NewRelicRegion),
 		"notify":                 strconv.FormatBool(manager.Notify),
 		"notify_quantity":        strconv.Itoa(manager.NotifyQuantity),
 		"notify_after":           strconv.Itoa(manager.NotifyAfter),
