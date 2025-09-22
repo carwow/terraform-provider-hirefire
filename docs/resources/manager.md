@@ -147,6 +147,7 @@ The following arguments are supported:
 - `new_relic_api_key` - New Relic api key.
 - `new_relic_app_id` - New Relic application id.
 - `new_relic_account_id` - V1 only. New Relic account id.
+- `new_relic_region` - V2 only. New Relic region.
 
 ### Manager::Web::NewRelic::V2::RPM (and V1)
 - `ratio` - Maintains a web:rpm ratio by scaling based on requests per minute.
@@ -157,6 +158,7 @@ The following arguments are supported:
 - `new_relic_api_key` - New Relic api key.
 - `new_relic_app_id` - New Relic application id.
 - `new_relic_account_id` - V1 only. New Relic account id.
+- `new_relic_region` - V2 only. New Relic region.
 
 ### Manager::Web::NewRelic::V2::Apdex (and V1)
 - `minimum_apdex` - Scales up if your application's apdex goes below this amount.
@@ -171,6 +173,7 @@ The following arguments are supported:
 - `new_relic_api_key` - New Relic api key.
 - `new_relic_app_id` - New Relic application id.
 - `new_relic_account_id` - V1 only. New Relic account id.
+- `new_relic_region` - V2 only. New Relic region.
 
 ### Manager::Web::HireFire::ResponseTime
 - `url` - Specific URL to measure.

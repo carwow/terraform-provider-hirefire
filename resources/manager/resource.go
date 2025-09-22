@@ -189,6 +189,10 @@ func Resource() *schema.Resource {
 				Type:     schema.TypeString,
 				Optional: true,
 			},
+			"new_relic_region": &schema.Schema{
+				Type:     schema.TypeString,
+				Optional: true,
+			},
 			"notify": &schema.Schema{
 				Type:     schema.TypeBool,
 				Optional: true,
@@ -244,6 +248,7 @@ func setAttributes(d *schema.ResourceData, manager *client.Manager) {
 	d.Set("new_relic_api_key", manager.NewRelicApiKey)
 	d.Set("new_relic_account_id", manager.NewRelicAccountId)
 	d.Set("new_relic_app_id", manager.NewRelicAppId)
+	d.Set("new_relic_region", manager.NewRelicRegion)
 	d.Set("notify", manager.Notify)
 	d.Set("notify_quantity", manager.NotifyQuantity)
 	d.Set("notify_after", manager.NotifyAfter)
@@ -413,6 +418,11 @@ func getAttributes(d *schema.ResourceData) client.Manager {
 	if v, ok := d.GetOk("new_relic_app_id"); ok {
 		value := v.(string)
 		manager.NewRelicAppId = &value
+	}
+
+	if v, ok := d.GetOk("new_relic_region"); ok {
+		value := v.(string)
+		manager.NewRelicRegion = &value
 	}
 
 	if v, ok := d.GetOk("notify"); ok {
