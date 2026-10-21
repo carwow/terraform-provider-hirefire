@@ -80,7 +80,7 @@ require (
 	github.com/hashicorp/terraform-config-inspect v0.0.0-20190821133035-82a99dc22ef4 // indirect
 	github.com/hashicorp/yamux v0.1.2 // indirect
 	github.com/huandu/xstrings v1.5.0 // indirect
-	github.com/klauspost/compress v1.18.6 // indirect
+	github.com/klauspost/compress v1.18.7 // indirect
 	github.com/mattn/go-colorable v0.1.15 // indirect
 	github.com/mattn/go-isatty v0.0.22 // indirect
 	github.com/mitchellh/cli v1.1.5 // indirect
