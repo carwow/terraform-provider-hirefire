@@ -2,10 +2,7 @@ module github.com/carwow/terraform-provider-hirefire
 
 go 1.27.0
 
-require (
-	github.com/hashicorp/terraform-plugin-sdk v1.2.0
-	github.com/imroc/req v0.2.4
-)
+require github.com/hashicorp/terraform-plugin-sdk v1.2.0
 
 require (
 	cel.dev/expr v0.26.0 // indirect

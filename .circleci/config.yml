@@ -59,6 +59,9 @@ jobs:
       - run:
           name: go test
           command: go test -failfast -v ./...
+      - run:
+          name: govulncheck
+          command: bin/govulncheck
 
   release:
     parameters:
