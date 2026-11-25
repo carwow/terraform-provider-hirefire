@@ -13,12 +13,20 @@ workflows:
           filters:
             branches:
               ignore: main
+      - govulncheck:
+          filters:
+            branches:
+              ignore: main
 
   test-acc:
     jobs:
       - test:
           name: test-acc
           acceptance: 'on'
+          filters:
+            branches:
+              only: main
+      - govulncheck:
           filters:
             branches:
               only: main
@@ -59,6 +67,23 @@ jobs:
       - run:
           name: go test
           command: go test -failfast -v ./...
+
+  govulncheck:
+    parameters:
+      go_version:
+        type: string
+        default: *go_version
+    executor:
+      name: go/default
+      tag: << parameters.go_version >>
+    # Needs more than the 4GB on medium
+    resource_class: large
+    steps:
+      - checkout
+      - go/mod-download-cached
+      - run:
+          name: govulncheck
+          command: bin/govulncheck
 
   release:
     parameters:

@@ -1,0 +1,28 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+govulncheck=golang.org/x/vuln/cmd/govulncheck@v1.10.0
+
+# Accepted vulnerabilities, with the reason they can't be fixed yet.
+allowed=(
+  GO-2026-5932 # x/crypto/openpgp: only reached via init of terraform-plugin-sdk v1; needs an SDK upgrade
+)
+
+found=$(go run "$govulncheck" -format json ./... |
+  jq -r 'select(.finding.trace[0].function) | .finding.osv' | sort -u)
+
+status=0
+for id in $found; do
+  if [[ " ${allowed[*]-} " == *" $id "* ]]; then
+    echo "allowed: $id"
+  else
+    echo "vulnerable: $id https://pkg.go.dev/vuln/$id"
+    status=1
+  fi
+done
+
+if [[ $status -ne 0 ]]; then
+  go run "$govulncheck" ./... || true
+fi
+
+exit $status
