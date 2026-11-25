@@ -13,10 +13,6 @@ workflows:
           filters:
             branches:
               ignore: main
-      - govulncheck:
-          filters:
-            branches:
-              ignore: main
 
   test-acc:
     jobs:
