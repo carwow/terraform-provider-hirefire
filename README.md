@@ -47,6 +47,9 @@ and run with:
 
     env $(cat .env) go test -v ./...
 
+Acceptance tests use the `terraform` binary on your `PATH`, or download the
+latest release if there isn't one.
+
 or to run tests for a single resource:
 
     env $(cat .env) go test -v ./resources/application

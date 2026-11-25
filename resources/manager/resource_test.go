@@ -8,8 +8,8 @@ import (
 	"github.com/carwow/terraform-provider-hirefire/client"
 	"github.com/carwow/terraform-provider-hirefire/ptr"
 	"github.com/carwow/terraform-provider-hirefire/testing/helper"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
 const resourceName = "hirefire_manager.foobar"
@@ -19,9 +19,9 @@ func TestAccManager(t *testing.T) {
 	manager := &client.Manager{}
 
 	resource.Test(t, resource.TestCase{
-		PreCheck:     helper.PreCheck(t),
-		Providers:    helper.Providers(),
-		CheckDestroy: checkDestroy,
+		PreCheck:          helper.PreCheck(t),
+		ProviderFactories: helper.ProviderFactories(),
+		CheckDestroy:      checkDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: func(orgName string, manager *client.Manager) string {

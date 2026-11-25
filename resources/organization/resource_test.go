@@ -6,8 +6,8 @@ import (
 
 	"github.com/carwow/terraform-provider-hirefire/client"
 	"github.com/carwow/terraform-provider-hirefire/testing/helper"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
-	"github.com/hashicorp/terraform-plugin-sdk/terraform"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/terraform"
 )
 
 const resourceName = "hirefire_organization.foobar"
@@ -16,9 +16,9 @@ func TestAccOrganization(t *testing.T) {
 	org := &client.Organization{}
 
 	resource.Test(t, resource.TestCase{
-		PreCheck:     helper.PreCheck(t),
-		Providers:    helper.Providers(),
-		CheckDestroy: checkDestroy,
+		PreCheck:          helper.PreCheck(t),
+		ProviderFactories: helper.ProviderFactories(),
+		CheckDestroy:      checkDestroy,
 		Steps: []resource.TestStep{
 			{
 				Config: func(org *client.Organization) string {

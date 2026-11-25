@@ -10,7 +10,7 @@ import (
 	"github.com/carwow/terraform-provider-hirefire/resources/recipient"
 	"github.com/carwow/terraform-provider-hirefire/resources/time_range"
 	"github.com/carwow/terraform-provider-hirefire/resources/user"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/schema"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/schema"
 )
 
 func Provider() *schema.Provider {

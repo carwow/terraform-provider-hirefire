@@ -7,7 +7,7 @@ import (
 
 	"github.com/carwow/terraform-provider-hirefire/client"
 	"github.com/carwow/terraform-provider-hirefire/testing/helper"
-	"github.com/hashicorp/terraform-plugin-sdk/helper/resource"
+	"github.com/hashicorp/terraform-plugin-sdk/v2/helper/resource"
 )
 
 const dataSourceName = "data.hirefire_user.foobar"
@@ -24,8 +24,8 @@ func TestAccUser(t *testing.T) {
 	}
 
 	resource.Test(t, resource.TestCase{
-		PreCheck:  helper.PreCheck(t),
-		Providers: helper.Providers(),
+		PreCheck:          helper.PreCheck(t),
+		ProviderFactories: helper.ProviderFactories(),
 		Steps: []resource.TestStep{
 			{
 				Config: configDataSource(user),

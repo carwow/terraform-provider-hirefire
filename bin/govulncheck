@@ -3,10 +3,8 @@ set -euo pipefail
 
 govulncheck=golang.org/x/vuln/cmd/govulncheck@v1.10.0
 
-# Accepted vulnerabilities, with the reason they can't be fixed yet.
-allowed=(
-  GO-2026-5932 # x/crypto/openpgp: only reached via init of terraform-plugin-sdk v1; needs an SDK upgrade
-)
+# Accepted vulnerabilities, one ID per line with the reason they can't be fixed yet.
+allowed=()
 
 found=$(go run "$govulncheck" -format json ./... |
   jq -r 'select(.finding.trace[0].function) | .finding.osv' | sort -u)
